@@ -16,16 +16,16 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_Validation_LengthTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->model = new UnitTest();
     }
@@ -38,7 +38,7 @@ class Mad_Model_Validation_LengthTest extends Mad_Test_Unit
             $validation = Mad_Model_Validation_Base::factory('length', 'string_value', $options);
             $this->fail();
         } catch (InvalidArgumentException $e) {
-            $this->assertRegExp('/unknown key/i', $e->getMessage());
+            $this->assertMatchesRegularExpression('/unknown key/i', $e->getMessage());
         }
     }
 
@@ -114,15 +114,12 @@ class Mad_Model_Validation_LengthTest extends Mad_Test_Unit
 
     public function testLengthInvalidWithinRange()
     {
-        try {
-            $options    = array('within' => 5);
-            $validation = Mad_Model_Validation_Base::factory('length', 'string_value', $options);
+        $this->expectException('InvalidArgumentException');
+        $options    = array('within' => 5);
+        $validation = Mad_Model_Validation_Base::factory('length', 'string_value', $options);
 
-            $this->model->string_value = 'abcdef';
-            $validation->validate('save', $this->model);
-
-            $this->fail();
-        } catch (InvalidArgumentException $e) {}
+        $this->model->string_value = 'abcdef';
+        $validation->validate('save', $this->model);
     }
 
     public function testLengthInvalidWithinRangeTooHigh()

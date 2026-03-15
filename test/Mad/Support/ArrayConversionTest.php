@@ -18,17 +18,17 @@ if (!defined('MAD_ROOT')) {
 /**
  * @todo Tests for sanitizeSql()
  * 
- * @group      support
  * @category   Mad
  * @package    Mad_Support
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('support')]
 class Mad_Support_ArrayConversionTest extends Mad_Test_Unit
 {
     // set up new db by inserting dummy data into the db
-    public function setUp()
+    public function setUp(): void
     {        
         $this->conversion = new Mad_Support_ArrayConversion;
     }
@@ -329,8 +329,8 @@ XML;
         $xml = $this->conversion->hashToXml($hash, $this->xmlOptions());
 
         $this->assertEquals("<person>", substr($xml, 0, 8));
-        $this->assertContains('<street>Paulina</street>', $xml);
-        $this->assertContains('<name>David</name>',       $xml);
+        $this->assertStringContainsString('<street>Paulina</street>', $xml);
+        $this->assertStringContainsString('<name>David</name>',       $xml);
     }
 
     public function testOneLevelDasherizeFalse()
@@ -339,8 +339,8 @@ XML;
         $xml = $this->conversion->hashToXml($hash, $this->xmlOptions(array('dasherize' => false)));
 
         $this->assertEquals("<person>", substr($xml, 0, 8));
-        $this->assertContains('<street_name>Paulina</street_name>', $xml);
-        $this->assertContains('<name>David</name>', $xml);
+        $this->assertStringContainsString('<street_name>Paulina</street_name>', $xml);
+        $this->assertStringContainsString('<name>David</name>', $xml);
     }
 
     public function testOneLevelDasherizeTrue()
@@ -349,8 +349,8 @@ XML;
         $xml = $this->conversion->hashToXml($hash, $this->xmlOptions(array('dasherize' => true)));
 
         $this->assertEquals("<person>", substr($xml, 0, 8));
-        $this->assertContains('<street-name>Paulina</street-name>', $xml);
-        $this->assertContains('<name>David</name>', $xml);
+        $this->assertStringContainsString('<street-name>Paulina</street-name>', $xml);
+        $this->assertStringContainsString('<name>David</name>', $xml);
     }
 
     /**
@@ -369,11 +369,11 @@ XML;
         $xml = $this->conversion->hashToXml($hash, $this->xmlOptions());
 
         $this->assertEquals("<person>", substr($xml, 0, 8));
-        $this->assertContains('<street-name>Paulina</street-name>',       $xml);
-        $this->assertContains('<name>David</name>',                       $xml);
-        $this->assertContains('<age type="integer">26</age>',             $xml);
-        $this->assertContains('<moved-on>2005-11-15</moved-on>',          $xml);
-        $this->assertContains('<resident type="boolean">true</resident>', $xml);
+        $this->assertStringContainsString('<street-name>Paulina</street-name>',       $xml);
+        $this->assertStringContainsString('<name>David</name>',                       $xml);
+        $this->assertStringContainsString('<age type="integer">26</age>',             $xml);
+        $this->assertStringContainsString('<moved-on>2005-11-15</moved-on>',          $xml);
+        $this->assertStringContainsString('<resident type="boolean">true</resident>', $xml);
     }
 
     public function testOneLevelWithNils()
@@ -382,9 +382,9 @@ XML;
         $xml = $this->conversion->hashToXml($hash, $this->xmlOptions());
 
         $this->assertEquals("<person>", substr($xml, 0, 8));
-        $this->assertContains('<street>Paulina</street>', $xml);
-        $this->assertContains('<name>David</name>',       $xml);
-        $this->assertContains('<age nil="true"></age>',   $xml);
+        $this->assertStringContainsString('<street>Paulina</street>', $xml);
+        $this->assertStringContainsString('<name>David</name>',       $xml);
+        $this->assertStringContainsString('<age nil="true"></age>',   $xml);
     }
 
     public function testOneLevelWithSkippingTypes()
@@ -393,10 +393,10 @@ XML;
         $xml = $this->conversion->hashToXml($hash, $this->xmlOptions(array('skipTypes' => true)));
 
         $this->assertEquals("<person>", substr($xml, 0, 8));
-        $this->assertContains('<street>Paulina</street>',  $xml);
-        $this->assertContains('<name>David</name>',        $xml);
-        $this->assertContains('<age nil="true"></age>',    $xml);
-        $this->assertContains('<resident>true</resident>', $xml);
+        $this->assertStringContainsString('<street>Paulina</street>',  $xml);
+        $this->assertStringContainsString('<name>David</name>',        $xml);
+        $this->assertStringContainsString('<age nil="true"></age>',    $xml);
+        $this->assertStringContainsString('<resident>true</resident>', $xml);
     }
 
     public function testTwoLevels()
@@ -405,8 +405,8 @@ XML;
         $xml = $this->conversion->hashToXml($hash, $this->xmlOptions());
         
         $this->assertEquals("<person>", substr($xml, 0, 8));
-        $this->assertContains('<address><street>Paulina</street></address>', $xml);
-        $this->assertContains('<name>David</name>', $xml);
+        $this->assertStringContainsString('<address><street>Paulina</street></address>', $xml);
+        $this->assertStringContainsString('<name>David</name>', $xml);
     }
 
     public function testTwoLevelsWithSecondLevelOverridingToXml()
@@ -415,8 +415,8 @@ XML;
         $xml = $this->conversion->hashToXml($hash, $this->xmlOptions());
         
         $this->assertEquals("<person>", substr($xml, 0, 8));
-        $this->assertContains('<address><street>Paulina</street></address>', $xml);
-        $this->assertContains('<level_one><second_level>content</second_level></level_one>', $xml);
+        $this->assertStringContainsString('<address><street>Paulina</street></address>', $xml);
+        $this->assertStringContainsString('<level_one><second_level>content</second_level></level_one>', $xml);
     }
 
     public function testTwoLevelsWithArray()
@@ -427,10 +427,10 @@ XML;
 
         $this->assertEquals("<person>", substr($xml, 0, 8));
         
-        $this->assertContains('<addresses type="array"><address>', $xml);
-        $this->assertContains('<address><street>Paulina</street></address>', $xml);
-        $this->assertContains('<address><street>Evergreen</street></address>', $xml);
-        $this->assertContains('<name>David</name>', $xml);
+        $this->assertStringContainsString('<addresses type="array"><address>', $xml);
+        $this->assertStringContainsString('<address><street>Paulina</street></address>', $xml);
+        $this->assertStringContainsString('<address><street>Evergreen</street></address>', $xml);
+        $this->assertStringContainsString('<name>David</name>', $xml);
     }
 
     public function testThreeLevelsWithArray()
@@ -439,7 +439,7 @@ XML;
                                                                                        array('name' => "Paulina")))));
         $xml = $this->conversion->hashToXml($hash, $this->xmlOptions());
 
-        $this->assertContains('<addresses type="array"><address><streets type="array"><street><name>', $xml);
+        $this->assertStringContainsString('<addresses type="array"><address><streets type="array"><street><name>', $xml);
     }
 
 
@@ -462,12 +462,12 @@ XML;
         $xml = $this->conversion->arrayToXml($array, array('skipInstruct' => true, 'indent' => 0));
 
         $this->assertEquals('<records type="array"><record>', substr($xml, 0, 30));
-        $this->assertContains('<age type="integer">26</age>', $xml);
-        $this->assertContains('<name>David</name>',           $xml);
-        $this->assertContains('<age type="integer">31</age>', $xml);
-        $this->assertContains('<name>Jason</name>',           $xml);
-        $this->assertContains('<age-in-millis type="integer">2147483647</age-in-millis>', $xml);
-        $this->assertContains('<age-in-millis type="float">1.1</age-in-millis>', $xml);
+        $this->assertStringContainsString('<age type="integer">26</age>', $xml);
+        $this->assertStringContainsString('<name>David</name>',           $xml);
+        $this->assertStringContainsString('<age type="integer">31</age>', $xml);
+        $this->assertStringContainsString('<name>Jason</name>',           $xml);
+        $this->assertStringContainsString('<age-in-millis type="integer">2147483647</age-in-millis>', $xml);
+        $this->assertStringContainsString('<age-in-millis type="float">1.1</age-in-millis>', $xml);
     }
 
     /**
@@ -496,10 +496,10 @@ XML;
                                                            'skipTypes'    => true));
 
         $this->assertEquals('<records><record>', substr($xml, 0, 17));
-        $this->assertContains('<street-address>Paulina</street-address>',   $xml);
-        $this->assertContains('<name>David</name>',                         $xml);
-        $this->assertContains('<street-address>Evergreen</street-address>', $xml);
-        $this->assertContains('<name>Jason</name>',                         $xml);
+        $this->assertStringContainsString('<street-address>Paulina</street-address>',   $xml);
+        $this->assertStringContainsString('<name>David</name>',                         $xml);
+        $this->assertStringContainsString('<street-address>Evergreen</street-address>', $xml);
+        $this->assertStringContainsString('<name>Jason</name>',                         $xml);
     }
 
     public function testToXmlWithDasherizeFalse()
@@ -508,12 +508,12 @@ XML;
             array('name' => "David", 'street_address' => 'Paulina'),
             array('name' => "Jason", 'street_address' => 'Evergreen')
         );
-        $xml = $this->conversion->arrayToXml($array, array('skipInstruct' => true, 'indent'    => 0, 
+        $xml = $this->conversion->arrayToXml($array, array('skipInstruct' => true, 'indent'    => 0,
                                                            'skipTypes'    => true, 'dasherize' => false));
 
         $this->assertEquals('<records><record>', substr($xml, 0, 17));
-        $this->assertContains('<street_address>Paulina</street_address>',   $xml);
-        $this->assertContains('<street_address>Evergreen</street_address>', $xml);
+        $this->assertStringContainsString('<street_address>Paulina</street_address>',   $xml);
+        $this->assertStringContainsString('<street_address>Evergreen</street_address>', $xml);
     }
 
     public function testToXmlWithDasherizeTrue()
@@ -522,12 +522,12 @@ XML;
             array('name' => "David", 'street_address' => 'Paulina'),
             array('name' => "Jason", 'street_address' => 'Evergreen')
         );
-        $xml = $this->conversion->arrayToXml($array, array('skipInstruct' => true, 'indent'    => 0, 
+        $xml = $this->conversion->arrayToXml($array, array('skipInstruct' => true, 'indent'    => 0,
                                                            'skipTypes'    => true, 'dasherize' => true));
 
         $this->assertEquals('<records><record>', substr($xml, 0, 17));
-        $this->assertContains('<street-address>Paulina</street-address>',   $xml);
-        $this->assertContains('<street-address>Evergreen</street-address>', $xml);
+        $this->assertStringContainsString('<street-address>Paulina</street-address>',   $xml);
+        $this->assertStringContainsString('<street-address>Evergreen</street-address>', $xml);
     }
 
     /**

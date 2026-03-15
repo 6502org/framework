@@ -18,13 +18,13 @@ if (!defined('MAD_ROOT')) {
 /**
  * Used for functional testing of controller classes
  *
- * @group      controller
  * @category   Mad
  * @package    Mad_Controller
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('controller')]
 class Mad_Controller_ResponderTest extends Mad_Test_Unit
 {
     // JavaScript
@@ -126,12 +126,8 @@ class Mad_Controller_ResponderTest extends Mad_Test_Unit
     {
         $request = new Mad_Controller_Request_Mock();
         $responder = new Mad_Controller_Responder($request);
-        
-        try {
-            $responder->xml(); 
-        } catch (BadMethodCallException $e) {
-            return;
-        }
-        $this->fail();
+
+        $this->expectException('BadMethodCallException');
+        $responder->xml();
     }
 }

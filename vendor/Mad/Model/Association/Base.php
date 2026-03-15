@@ -72,6 +72,7 @@ abstract class Mad_Model_Association_Base
      * @var string
      */
     protected $_assocName = null;
+    protected $_joinTable;
 
     /**
      * The method used to create the association.
@@ -186,7 +187,7 @@ abstract class Mad_Model_Association_Base
      * @param   string  $assocName
      * @param   array   $options
      */
-    abstract protected function __construct($assocName, $options, $model);
+    abstract protected function __construct($assocName, $options, Mad_Model_Base $model);
 
     /**
      * Stringified version

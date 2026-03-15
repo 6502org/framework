@@ -206,6 +206,7 @@ class Mad_Model_Errors implements Iterator, Countable
      * 
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         $count = 0;
@@ -233,6 +234,7 @@ class Mad_Model_Errors implements Iterator, Countable
      * 
      * @return  Error
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $i = 0;
@@ -258,6 +260,7 @@ class Mad_Model_Errors implements Iterator, Countable
      *
      * @return  int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         $i = 0;
@@ -282,6 +285,7 @@ class Mad_Model_Errors implements Iterator, Countable
      *
      * @return  Error
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         $result = $this->current();
@@ -301,6 +305,7 @@ class Mad_Model_Errors implements Iterator, Countable
      * </code>
      *
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->_position = 0;
@@ -311,6 +316,7 @@ class Mad_Model_Errors implements Iterator, Countable
      * 
      * @return  boolean
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         $i = 0;

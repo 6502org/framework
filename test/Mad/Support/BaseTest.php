@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      support
  * @category   Mad
  * @package    Mad_Support
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('support')]
 class Mad_Support_BaseTest extends Mad_Test_Unit
 {
     // test validating keys
@@ -104,7 +104,7 @@ class Mad_Support_BaseTest extends Mad_Test_Unit
                 Mad_Support_Base::assertValidKeys($bad, array());
                 $this->fail();
             } catch (InvalidArgumentException $e) {
-                $this->assertRegExp('/expected array/i', $e->getMessage());
+                $this->assertMatchesRegularExpression('/expected array/i', $e->getMessage());
             }
         }
     }

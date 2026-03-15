@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      support
  * @category   Mad
  * @package    Support
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('support')]
 class Mad_Support_ObjectTest extends Mad_Test_Unit
 {
     public function testAttributeAccessorsAllowsReadAndWrite()
@@ -44,27 +44,22 @@ class Mad_Support_ObjectTest extends Mad_Test_Unit
     {
         $book = Book::find('first');
 
-        try {
-            $book->id = 5;
-        } catch (Exception $e) { return; }
-        $this->fail('Expected exception wasn\'t raised');
+        $this->expectException('Exception');
+        $book->id = 5;
     }
 
     public function testAttributeWriterAllowsWrite()
     {
         $book = Book::find('first');
-        try {
-            $book->hidden = 'test';
-        } catch (Exception $e) { $this->fail('Unexepected exception raised'); }
+        $book->hidden = 'test';
+        $this->assertTrue(true);
     }
 
     public function testAttributeWriterDoesntAllowRead()
     {
         $book = Book::find('first');
-        try {
-            $book->hidden;
-        } catch (Exception $e) { return; }
-        $this->fail('Expected exception wasn\'t raised');
+        $this->expectException('Exception');
+        $book->hidden;
     }
 
     public function testAttributeAccessorUsesProxyGetterMethod()

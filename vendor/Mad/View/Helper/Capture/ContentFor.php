@@ -24,6 +24,7 @@ class Mad_View_Helper_Capture_ContentFor extends Mad_View_Helper_Capture_Base
      * @var string
      */
     private $_name;
+    private $_view;
 
     /**
      * Start capturing content that will be stored as

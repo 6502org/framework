@@ -16,17 +16,17 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      support
  * @category   Mad
  * @package    Mad_Support
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('support')]
 class Mad_Support_BuilderTest extends Mad_Test_Unit
 {
     // set up new db by inserting dummy data into the db
-    public function setUp()
+    public function setUp(): void
     {
         $this->fixtures('articles');
     }

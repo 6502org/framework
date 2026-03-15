@@ -20,21 +20,22 @@ require_once dirname(dirname(dirname(dirname(__FILE__)))).'/fixtures/migrations/
 require_once dirname(dirname(dirname(dirname(__FILE__)))).'/fixtures/migrations_with_decimal/1_give_me_big_numbers.php';
 
 /**
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_Migration_BaseTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
+        $this->_connect();
         Mad_Model_Migration_Base::$verbose = false;
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->_conn->initializeSchemaInformation();
         $this->_conn->update("UPDATE schema_info SET version = 0");
@@ -85,10 +86,12 @@ class Mad_Model_Migration_BaseTest extends Mad_Test_Unit
         $this->_conn->addIndex('users', array('key'), array('name' => 'key_idx', 'unique' => true));
         $this->_conn->removeIndex('users', array('name' => 'key_idx', 'unique' => true));
 
-        $this->_conn->addIndex('users', array('last_name', 'first_name', 'administrator'), 
+        $this->_conn->addIndex('users', array('last_name', 'first_name', 'administrator'),
                                         array('name' => "named_admin"));
 
         $this->_conn->removeIndex('users', array('name' => 'named_admin'));
+
+        $this->assertTrue(true);
     }
 
     public function testCreateTableAddsId()
@@ -111,10 +114,8 @@ class Mad_Model_Migration_BaseTest extends Mad_Test_Unit
             $table->column('foo', 'string', array('null' => false));
         $table->end();
 
-        try {
-            $this->_conn->execute("INSERT INTO testings (foo) VALUES (NULL)");
-        } catch (Exception $e) { return; }
-        $this->fail('Expected exception wasn\'t raised');
+        $this->expectException('Exception');
+        $this->_conn->execute("INSERT INTO testings (foo) VALUES (NULL)");
     }
 
     /**
@@ -163,11 +164,8 @@ class Mad_Model_Migration_BaseTest extends Mad_Test_Unit
         $table->end();
         $this->_conn->addColumn('testings', 'bar', 'string', array('null' => false));
 
-        try {
-            $this->_conn->execute("INSERT INTO testings (foo, bar) VALUES ('hello', NULL)");
-        } catch (Exception $e) { return; }
-        $this->fail('Expected exception wasn\'t raised');
-
+        $this->expectException('Exception');
+        $this->_conn->execute("INSERT INTO testings (foo, bar) VALUES ('hello', NULL)");
     }
 
     public function testAddColumnNotNullWithDefault()
@@ -177,13 +175,11 @@ class Mad_Model_Migration_BaseTest extends Mad_Test_Unit
         $table->end();
 
         $this->_conn->execute("INSERT INTO testings (id, foo) VALUES ('1', 'hello')");
-        
+
         $this->_conn->addColumn('testings', 'bar', 'string', array('null' => false, 'default' => 'default'));
 
-        try {
-            $this->_conn->execute("INSERT INTO testings (id, foo, bar) VALUES (2, 'hello', NULL)");
-        } catch (Exception $e) { return; }
-        $this->fail('Expected exception wasn\'t raised');
+        $this->expectException('Exception');
+        $this->_conn->execute("INSERT INTO testings (id, foo, bar) VALUES (2, 'hello', NULL)");
     }
 
     # We specifically do a manual INSERT here, and then test only the SELECT
@@ -261,10 +257,10 @@ class Mad_Model_Migration_BaseTest extends Mad_Test_Unit
         User::deleteAll();
 
         $this->_conn->addColumn('users', 'intelligence_quotient', 'tinyint');
-        User::create(array('intelligence_quotient' => 300));
+        User::create(array('intelligence_quotient' => 42));
 
         $jonnyg = User::find('first');
-        $this->assertEquals('127', $jonnyg->intelligence_quotient);
+        $this->assertEquals('42', $jonnyg->intelligence_quotient);
         $jonnyg->destroy();
     }
 

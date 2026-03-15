@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      controller
  * @category   Mad
  * @package    Mad_Controller
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('controller')]
 class Mad_Controller_ScannerTest extends Mad_Test_Unit
 {
     public function testConstructorAnalyzesRoutes()

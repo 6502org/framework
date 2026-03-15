@@ -16,17 +16,17 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_CollectionTest extends Mad_Test_Unit
 {
     // set up new db by inserting dummy data into the db
-    public function setUp()
+    public function setUp(): void
     {
         $this->fixtures('unit_tests', 'users');
 
@@ -363,10 +363,10 @@ class Mad_Model_CollectionTest extends Mad_Test_Unit
         $collection = new Mad_Model_Collection(new User, $array);
         $xml = $collection->toXml();
         
-        $this->assertContains('<users type="array">',        $xml);
-        $this->assertContains('<user>',                      $xml);
-        $this->assertContains('<name>Derek DeVries</name>',  $xml);
-        $this->assertContains('<name>Mike Naberezny</name>', $xml);
+        $this->assertStringContainsString('<users type="array">',        $xml);
+        $this->assertStringContainsString('<user>',                      $xml);
+        $this->assertStringContainsString('<name>Derek DeVries</name>',  $xml);
+        $this->assertStringContainsString('<name>Mike Naberezny</name>', $xml);
     }
 
     public function testToXmlAssigningRoot()
@@ -380,7 +380,7 @@ class Mad_Model_CollectionTest extends Mad_Test_Unit
         $options = array('root' => 'people', 'indent' => false);
         $xml     = $collection->toXml($options);
         
-        $this->assertContains('<people type="array">', $xml);
+        $this->assertStringContainsString('<people type="array">', $xml);
     }
 
     public function testToXmlSkipInstruct()
@@ -394,7 +394,7 @@ class Mad_Model_CollectionTest extends Mad_Test_Unit
         $options = array('skipInstruct' => true, 'indent' => false);
         $xml     = $collection->toXml($options);
 
-        $this->assertNotContains('<?xml', $xml);
+        $this->assertStringNotContainsString('<?xml', $xml);
     }
     
     public function testToXmlNoSkipInstruct()
@@ -408,7 +408,7 @@ class Mad_Model_CollectionTest extends Mad_Test_Unit
         $options = array('skipInstruct' => false, 'indent' => false);
         $xml     = $collection->toXml($options);
 
-        $this->assertContains('<?xml', $xml);
+        $this->assertStringContainsString('<?xml', $xml);
     }
     
     public function testToXmlSkipTypes()
@@ -422,8 +422,8 @@ class Mad_Model_CollectionTest extends Mad_Test_Unit
         $options = array('skipTypes' => true, 'indent' => false);
         $xml     = $collection->toXml($options);
 
-        $this->assertContains('<users>', $xml);
-        $this->assertContains('<id>',    $xml);
+        $this->assertStringContainsString('<users>', $xml);
+        $this->assertStringContainsString('<id>',    $xml);
     }
     
     public function testToXmlDasherizeFalse()
@@ -437,7 +437,7 @@ class Mad_Model_CollectionTest extends Mad_Test_Unit
         $options = array('dasherize' => false, 'indent' => false);
         $xml     = $collection->toXml($options);
 
-        $this->assertContains('<created_at', $xml);
+        $this->assertStringContainsString('<created_at', $xml);
     }
     
     public function testToXmlDasherizeTrue()
@@ -451,7 +451,7 @@ class Mad_Model_CollectionTest extends Mad_Test_Unit
         $options = array('dasherize' => true, 'indent' => false);
         $xml     = $collection->toXml($options);
 
-        $this->assertContains('<created-at', $xml);
+        $this->assertStringContainsString('<created-at', $xml);
     }
 
     public function testToXmlEmpty()

@@ -84,14 +84,14 @@ class Mad_Model_Validation_Length extends Mad_Model_Validation_Base
 
         // minimum length
         if ($min = $this->_options['minimum']) {
-            if (strlen($value) < $min) {
+            if (strlen((string)$value) < $min) {
                 $msg = sprintf($this->_options['tooShort'], $min);
                 $this->_model->errors->add($column, $msg);
             }
         }
         // maximum length
         if ($max = $this->_options['maximum']) {
-            if (strlen($value) > $max) {
+            if (strlen((string)$value) > $max) {
                 $msg = sprintf($this->_options['tooLong'], $max);
                 $this->_model->errors->add($column, $msg);
             }

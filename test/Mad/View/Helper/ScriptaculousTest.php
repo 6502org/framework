@@ -15,6 +15,7 @@ if (!defined('MAD_ROOT')) {
     require_once dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config/environment.php';
 }
 
+#[\PHPUnit\Framework\Attributes\Group('view')]
 class Mad_View_Helper_ScriptaculousTest_MockUrlHelper extends Mad_View_Helper_Base
 {
     public function urlFor($options)
@@ -28,16 +29,16 @@ class Mad_View_Helper_ScriptaculousTest_MockUrlHelper extends Mad_View_Helper_Ba
 }
 
 /**
- * @group      view
  * @category   Mad
  * @package    Mad_View
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('view')]
 class Mad_View_Helper_ScriptaculousTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->view = new Mad_View_Base();
         $this->view->addHelper(new Mad_View_Helper_Tag($this->view));

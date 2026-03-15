@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      test
  * @category   Mad
  * @package    Mad_Test
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('test')]
 class Mad_Test_FunctionalTest extends Mad_Test_Functional
 {
 
@@ -179,7 +179,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertRouting(array('test' => '123'));
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test asserting a template variable was set
@@ -200,13 +200,13 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
          $this->assertAssigns('testVariable', 'wrong value');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
 
         $e = null;
         try {
          $this->assertAssigns('testWrongVar', 'buga buga');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
      }
    
     // test asserting cookie was set
@@ -226,13 +226,13 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertAssignsCookie('functional_cookie', 'wrong value');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
    
         $e = null;
         try {
             $this->assertAssignsCookie('test_wrong_cookie', 'test cookie data');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -254,13 +254,13 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertAssignsSession('functional_session', 'wrong value');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
    
         $e = null;
         try {
             $this->assertAssignsSession('test_wrong_session', 'test session data');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test asserting flash was set
@@ -281,13 +281,13 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertAssignsFlash('functional_flash', 'wrong value');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
    
         $e = null;
         try {
             $this->assertAssignsFlash('test_wrong_flash', 'test flash data');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test assering the routing params
@@ -308,7 +308,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertAction('testCrap');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test assering the routing params
@@ -329,7 +329,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertAction('testAction', 'SomeOtherController');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test assertion of template usage
@@ -351,7 +351,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertTemplate('SomeOther/testAction');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test assertion of redirect
@@ -372,7 +372,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertRedirectedTo("/unit_test/some_bad_action/123");
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -394,7 +394,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertResponseContains('nada');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test response body against regex pattern
@@ -423,7 +423,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertResponseContains('/nada/');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test response body against string fragment
@@ -444,7 +444,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertResponseDoesNotContain('Rendered test action template');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test response body against regex pattern
@@ -465,7 +465,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertResponseDoesNotContain('/(a)ction template/');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -492,7 +492,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertResponse(300);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // test assertion of response status
@@ -514,7 +514,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertResponse('success');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -537,7 +537,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertResponse('redirect');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -566,7 +566,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertResponse('missing');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -590,7 +590,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertResponse('error');
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -619,7 +619,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
          try {
              $this->assertSelect($selector, $content);
          } catch (Exception $e) {}
-         $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+         $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
      }
     
      // attempt to NOT match element passes
@@ -643,7 +643,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // attempt to match content passes
@@ -667,7 +667,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // attempt to match content passes
@@ -691,7 +691,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content, false);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // attempt to match count passes
@@ -715,7 +715,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
 
     // attempt to match count passes
@@ -739,7 +739,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
 
     // attempt to match range passes
@@ -763,7 +763,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
 
     // attempt to match range passes
@@ -787,7 +787,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
 
     // attempt to match range passes
@@ -812,7 +812,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
 
     // attempt to match range passes
@@ -836,7 +836,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     // attempt to match range passes
@@ -860,7 +860,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertSelect($selector, $content);
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     /*##########################################################################
@@ -883,7 +883,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertFileSent();
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -903,7 +903,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertFileSent(array('disposition' => 'attachment'));
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -924,7 +924,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertFileSent(array('filename' => 'test.jpg'));
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
    
@@ -945,7 +945,7 @@ class Mad_Test_FunctionalTest extends Mad_Test_Functional
         try {
             $this->assertFileSent(array('type' => 'image/gif'));
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
    
     /*##########################################################################

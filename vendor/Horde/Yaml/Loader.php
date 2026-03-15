@@ -44,7 +44,11 @@ class Horde_Yaml_Loader
      * Last indent level
      * @var integer
      */
+    protected $_ref = array();
+
     protected $_lastIndent = 0;
+
+    protected $_indentSort = array();
 
     /**
      * Last node id
@@ -57,6 +61,8 @@ class Horde_Yaml_Loader
      * @var boolean
      */
     protected $_inBlock = false;
+
+    protected $_blockEnd = '';
 
     /**
      * @var boolean
@@ -227,8 +233,8 @@ class Horde_Yaml_Loader
                 if ($isset) {
                     $nodeval = $node->data[$key];
                 }
-                if (($is_array && $isset && !is_array($nodeval) && !is_object($nodeval))
-                    && (strlen($nodeval) && ($nodeval[0] == '&' || $nodeval[0] == '*') && $nodeval[1] != ' ')) {
+                if (($is_array && $isset && is_string($nodeval))
+                    && (strlen($nodeval) > 1 && ($nodeval[0] == '&' || $nodeval[0] == '*') && $nodeval[1] != ' ')) {
                     $this->_haveRefs[] =& $this->_allNodes[$node->id];
                 } elseif ($is_array && $isset && is_array($nodeval)) {
                     // Incomplete reference making code. Needs to be
@@ -737,7 +743,7 @@ class Horde_Yaml_Loader
      */
     protected function _array_kmerge($arr1, $arr2)
     {
-        while (list($key, $val) = each($arr2)) {
+        foreach ($arr2 as $key => $val) {
             if (isset($arr1[$key]) && is_int($key)) {
                 $arr1[] = $val;
             } else {

@@ -159,8 +159,8 @@ class Horde_Routes_Utils
                     $url .= '?';
                     $query_args = array();
                     foreach ($kargs as $key => $val) {
-                        $query_args[] = urlencode(utf8_decode($key)) . '=' .
-                            urlencode(utf8_decode($val));
+                        $query_args[] = urlencode(self::_encodeUrl($key)) . '=' .
+                            urlencode(self::_encodeUrl($val));
                     }
                     $url .= implode('&', $query_args);
                 }
@@ -404,7 +404,7 @@ class Horde_Routes_Utils
         if ($encoding === null) {
             return str_replace('%2F', '/', urlencode($url));
         } else {
-            return str_replace('%2F', '/', urlencode(utf8_decode($url)));
+            return str_replace('%2F', '/', urlencode(self::_encodeUrl($url)));
         }
     }
 
@@ -431,5 +431,21 @@ class Horde_Routes_Utils
             }
         }
         return $a1;
+    }
+
+    /**
+     * Encode a URL string for use with urlencode().
+     * On PHP < 8.2, uses utf8_decode(). On PHP 8.2+, passes through
+     * unchanged since urlencode() handles UTF-8 directly.
+     *
+     * @param  string  $url
+     * @return string
+     */
+    private static function _encodeUrl($url)
+    {
+        if (PHP_VERSION_ID < 80200) {
+            return utf8_decode($url);
+        }
+        return $url;
     }
 }

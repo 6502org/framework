@@ -20,6 +20,7 @@ class Mad_Model_Join_Association extends Mad_Model_Join_Base
     protected $_parent               = null;
     protected $_aliasedTableName     = null;
     protected $_aliasPrefix          = null;
+    protected $_aliasedPrefix        = null;
     protected $_aliasedJoinTableName = null;
     protected $_parentTableName      = null;
 

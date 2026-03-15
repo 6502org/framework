@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_Association_HasManyTest extends Mad_Test_Unit
 {
 
@@ -772,9 +772,8 @@ class Mad_Model_Association_HasManyTest extends Mad_Test_Unit
         $this->fixtures('articles', 'users');
 
         $user = User::find($this->users('derek')->id);
-        try {
-            $article = $user->buildArticle();
-        } catch (Exception $e) { $this->fail('Unexepected exception raised'); }
+        $article = $user->buildArticle();
+        $this->assertInstanceOf('Article', $article);
     }
 
     public function testBuildObjectAssignsForeignKey()

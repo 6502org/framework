@@ -18,17 +18,17 @@ if (!defined('MAD_ROOT')) {
 /**
  * Used for functional testing of controller classes
  *
- * @group      controller
  * @category   Mad
  * @package    Mad_Controller
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('controller')]
 class Mad_Controller_BaseTest extends Mad_Test_Functional
 {
     // set up
-    public function setUp()
+    public function setUp(): void
     {
         // set up request/routes
         $this->request  = new Mad_Controller_Request_Mock();

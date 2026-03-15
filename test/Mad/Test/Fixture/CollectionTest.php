@@ -16,17 +16,18 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      test
  * @category   Mad
  * @package    Mad_Test
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('test')]
 class Mad_Test_Fixture_CollectionTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
+        $this->_connect();
         $this->_conn->execute("DELETE FROM unit_tests");
         Mad_Test_Fixture_Base::resetParsed();
     }

@@ -20,7 +20,6 @@ class Mad_Support_Base
     public static function initialize()
     {
         spl_autoload_register(array('Mad_Support_Base', 'autoload'));
-        Mad_Model_Stream::install();
         Mad_View_Stream::install();
         Mad_Support_PhpErrorHandler::install();
     }
@@ -35,11 +34,17 @@ class Mad_Support_Base
     {
         $filepath = str_replace('_', '/', $class).".php";
 
-        // filter models through Mad_Model_Stream
+        // load models from app/models
         if (self::modelExists($class)) {
-            $filepath = "madmodel://".MAD_ROOT."/app/models/$filepath";
+            require_once MAD_ROOT."/app/models/$filepath";
+            return;
         }
-        require_once $filepath;
+
+        // only require if the file can be found in the include path
+        $found = stream_resolve_include_path($filepath);
+        if ($found !== false) {
+            require_once $found;
+        }
     }
 
     /**

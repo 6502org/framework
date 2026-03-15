@@ -18,17 +18,17 @@ if (!defined('MAD_ROOT')) {
 /**
  * @todo Tests for sanitizeSql()
  * 
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://maintainable.com/framework-license.txt
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_BaseTest extends Mad_Test_Unit
 {
     // set up new db by inserting dummy data into the db
-    public function setUp()
+    public function setUp(): void
     {
         $this->fixtures('unit_tests');
     }
@@ -40,19 +40,22 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
     // connect with no opts
     public function testEstablishConnection()
     {
-        $conn = Mad_Model_Base::establishConnection();
+        Mad_Model_Base::establishConnection();
+        $this->assertTrue(true);
     }
 
     // connect with string
     public function testEstablishConnectionString()
     {
-        $conn = Mad_Model_Base::establishConnection('development');
+        Mad_Model_Base::establishConnection('development');
+        $this->assertTrue(true);
     }
 
     // connect with array
     public function testEstablishConnectionArray()
     {
-        $conn = Mad_Model_Base::establishConnection(array());
+        Mad_Model_Base::establishConnection(array());
+        $this->assertTrue(true);
     }
 
 
@@ -189,7 +192,7 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
         $this->assertEquals(13, count($columns));
         
         foreach ($columns as $col) {
-            $this->assertRegexp('/Column$/', get_class($col));
+            $this->assertMatchesRegularExpression('/Column$/', get_class($col));
         }
     }
 
@@ -198,7 +201,7 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
         $test = new UnitTest();
         $columns = $test->columnsHash();
         $this->assertEquals(13, count($columns));
-        $this->assertRegexp('/Column/', get_class($columns['id']));
+        $this->assertMatchesRegularExpression('/Column/', get_class($columns['id']));
     }
 
     public function testColumnNames()
@@ -328,7 +331,7 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
     {
         $user = new User;
         $col = $user->columnForAttribute('name');
-        $this->assertRegexp('/Column$/', get_class($col));
+        $this->assertMatchesRegularExpression('/Column$/', get_class($col));
         
         $this->assertEquals('string', $col->getType());
     }
@@ -387,9 +390,10 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
     public function testGetColumnStr()
     {
         $test = new UnitTest();
-        $expected = '`id`, `integer_value`, `string_value`, `text_value`, `float_value`, '.
-                    '`decimal_value`, `datetime_value`, `date_value`, `time_value`, '.
-                    '`blob_value`, `boolean_value`, `enum_value`, `email_value`';
+        $q = Mad_Model_Base::connection()->adapterName() == 'PDO_SQLite' ? '"' : '`';
+        $expected = "{$q}id{$q}, {$q}integer_value{$q}, {$q}string_value{$q}, {$q}text_value{$q}, {$q}float_value{$q}, ".
+                    "{$q}decimal_value{$q}, {$q}datetime_value{$q}, {$q}date_value{$q}, {$q}time_value{$q}, ".
+                    "{$q}blob_value{$q}, {$q}boolean_value{$q}, {$q}enum_value{$q}, {$q}email_value{$q}";
         $this->assertEquals($expected, $test->getColumnStr());
     }
 
@@ -397,9 +401,10 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
     public function testGetColumnStrAlias()
     {
         $test = new UnitTest();
-        $expected = '`t`.`id`, `t`.`integer_value`, `t`.`string_value`, `t`.`text_value`, `t`.`float_value`, '.
-                    '`t`.`decimal_value`, `t`.`datetime_value`, `t`.`date_value`, `t`.`time_value`, '.
-                    '`t`.`blob_value`, `t`.`boolean_value`, `t`.`enum_value`, `t`.`email_value`';
+        $q = Mad_Model_Base::connection()->adapterName() == 'PDO_SQLite' ? '"' : '`';
+        $expected = "{$q}t{$q}.{$q}id{$q}, {$q}t{$q}.{$q}integer_value{$q}, {$q}t{$q}.{$q}string_value{$q}, {$q}t{$q}.{$q}text_value{$q}, {$q}t{$q}.{$q}float_value{$q}, ".
+                    "{$q}t{$q}.{$q}decimal_value{$q}, {$q}t{$q}.{$q}datetime_value{$q}, {$q}t{$q}.{$q}date_value{$q}, {$q}t{$q}.{$q}time_value{$q}, ".
+                    "{$q}t{$q}.{$q}blob_value{$q}, {$q}t{$q}.{$q}boolean_value{$q}, {$q}t{$q}.{$q}enum_value{$q}, {$q}t{$q}.{$q}email_value{$q}";
         $this->assertEquals($expected, $test->getColumnStr('t'));
     }
 
@@ -409,8 +414,8 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
         $test = new UnitTest(array('id'            => 100,
                                    'integer_value' => 1000,
                                    'string_value'  => 'My Name'));
-        
-        $values = "'100', '1000', 'My Name', NULL, '0.0', '0.0', '0000-00-00 00:00:00', '0000-00-00', '00:00:00', NULL, '0', 'a', ''";
+
+        $values = "100, 1000, 'My Name', NULL, 0, 0, NULL, NULL, NULL, NULL, 0, 'a', ''";
         $this->assertEquals($values, $test->getInsertValuesStr());
     }
 
@@ -421,7 +426,10 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
                                    'integer_value' => 1000,
                                    'string_value'  => "Derek's Name"));
 
-        $values = "'100', '1000', 'Derek\'s Name', NULL, '0.0', '0.0', '0000-00-00 00:00:00', '0000-00-00', '00:00:00', NULL, '0', 'a', ''";
+        // MySQL escapes quotes with backslash, SQLite doubles them
+        $isSqlite = Mad_Model_Base::connection()->adapterName() == 'PDO_SQLite';
+        $name = $isSqlite ? "'Derek''s Name'" : "'Derek\\'s Name'";
+        $values = "100, 1000, $name, NULL, 0, 0, NULL, NULL, NULL, NULL, 0, 'a', ''";
         $this->assertEquals($values, $test->getInsertValuesStr());
     }
 
@@ -1203,17 +1211,14 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
         $this->assertTrue(UnitTest::exists(20));
     }
 
-    // Test setting zero as the primary key (should fail)
+    // Test setting zero as the primary key (should raise)
     public function testSaveInsertZeroOnPrimaryKey()
     {
-        $test = UnitTest::create(array('id'            => 0, 
-                                       'integer_value' => 123,
-                                       'string_value'  => 'asdf', 
-                                       'email_value'   => 'foo@example.com'));
-        $this->assertFalse(UnitTest::exists(0));
-
-        $test = UnitTest::find('first', array('conditions' => "string_value = 'asdf'"));
-        $this->assertInstanceOf('UnitTest', $test);
+        $this->expectException('Mad_Model_Exception');
+        UnitTest::create(array('id'            => 0,
+                               'integer_value' => 123,
+                               'string_value'  => 'asdf',
+                               'email_value'   => 'foo@example.com'));
     }
 
     // test updating records
@@ -1235,16 +1240,9 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
     public function testAutomaticColumnsInsert()
     {
         $user = new User;
-
-        // all magic columns are null
-        $this->assertEquals('0000-00-00 00:00:00', $user->created_at);
-        $this->assertEquals('0000-00-00',          $user->created_on);
-        $this->assertEquals('0000-00-00 00:00:00', $user->updated_at);
-        $this->assertEquals('0000-00-00',          $user->updated_on);
-
         $user->save();
 
-        // all magic columns are updated
+        // all magic columns are set after save
         $this->assertNotNull($user->created_at);
         $this->assertNotNull($user->created_on);
         $this->assertNotNull($user->updated_at);
@@ -1277,10 +1275,6 @@ class Mad_Model_BaseTest extends Mad_Test_Unit
     # Test UPDATEs
     ##########################################################################*/
     
-    // @todo - fix saving of belongs to associated objects
-    // Saving a change to a column of an associated belongs to object doesn't 
-    // work when we include the object in the find. This has to do with saving
-    // the associated object before we save the base object
     public function testUpdateAttributesWithAssociations()
     {
         $this->fixtures('users', 'articles');

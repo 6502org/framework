@@ -59,13 +59,13 @@ class Mad_View_Helper_Number extends Mad_View_Helper_Base
 
         if ($areaCode) {
             $str .= preg_replace('/([0-9]{1,3})([0-9]{3})([0-9]{4}$)/',
-                                 "(\\1) \\2$delimiter\\3", $number);
+                                 "(\\1) \\2$delimiter\\3", (string)$number);
         } else {
             $str .= preg_replace('/([0-9]{1,3})([0-9]{3})([0-9]{4})$/',
-                                 "\\1$delimiter\\2$delimiter\\3", $number);
+                                 "\\1$delimiter\\2$delimiter\\3", (string)$number);
         }
         
-        if (strlen($extension)) {
+        if (strlen((string)$extension)) {
             $str .= " x $extension";
         }
         
@@ -94,7 +94,7 @@ class Mad_View_Helper_Number extends Mad_View_Helper_Base
      */
     public function numberToCurrency($number, $options = array())
     {
-        if (! strlen($number)) {
+        if (! strlen((string)$number)) {
             return $number;
         }
         
@@ -129,7 +129,7 @@ class Mad_View_Helper_Number extends Mad_View_Helper_Base
      */
     public function numberToPercentage($number, $options = array())
     {
-        if (! strlen($number)) {
+        if (! strlen((string)$number)) {
             return $number;
         }
         
@@ -162,7 +162,7 @@ class Mad_View_Helper_Number extends Mad_View_Helper_Base
      */
     public function numberWithDelimiter($number, $delimiter = ',', $separator = '.')
     {
-        if (! strlen($number)) {
+        if (! strlen((string)$number)) {
             return $number;
         }
                 

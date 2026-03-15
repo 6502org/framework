@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      support
  * @category   Mad
  * @package    Support
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('support')]
 class Mad_Support_PhpErrorTest extends Mad_Test_Unit
 {
 
@@ -74,28 +74,14 @@ class Mad_Support_PhpErrorTest extends Mad_Test_Unit
         $this->assertEquals('PHP User Notice', $e->getTitle());
     }
 
-    public function testSetsTitleForStrictNotice()
-    {
-        $e = new Mad_Support_PHPError('', E_STRICT);
-        $this->assertEquals('PHP Strict Notice', $e->getTitle());
-    }
-
     public function testSetsTitleForRecoverableError()
     {
-        if (! defined('E_RECOVERABLE_ERROR')) {
-            define('E_RECOVERABLE_ERROR', 4096);
-        }
-
         $e = new Mad_Support_PHPError('', E_RECOVERABLE_ERROR);
         $this->assertEquals('PHP Recoverable Error', $e->getTitle());
     }
-    
+
     public function testSetsTitleForDeprecatedNotice()
     {
-        if (! defined('E_DEPRECATED')) {
-            define('E_DEPRECATED', 8192);
-        }
-        
         $e = new Mad_Support_PHPError('', E_DEPRECATED);
         $this->assertEquals('PHP Deprecated Notice', $e->getTitle());
     }

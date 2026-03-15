@@ -16,23 +16,23 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      support
  * @category   Mad
  * @package    Mad_Support
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('support')]
 class Mad_Support_FileUtilsTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         // remove test file
         @unlink(MAD_ROOT."/test/tmp/base_file.txt");
         Mad_Support_FileUtils::rm_rf(MAD_ROOT."/test/tmp/mad_file");
     }
     
-    public function tearDown()
+    public function tearDown(): void
     {
         // remove test file
         @unlink(MAD_ROOT."/test/tmp/base_file.txt");

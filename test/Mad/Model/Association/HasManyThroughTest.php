@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_Association_HasManyThroughTest extends Mad_Test_Unit
 {
 
@@ -424,6 +424,70 @@ class Mad_Model_Association_HasManyThroughTest extends Mad_Test_Unit
             $this->assertEquals('Ruby', $tag->name);
             $this->assertTrue(in_array($article->id, $tag->articleIds));
         }
+    }
+
+    /*##########################################################################
+    # Dependent options
+    ##########################################################################*/
+
+    // deleteAll (default) deletes join records with a single DELETE query
+    public function testClearAssociationsDeleteAll()
+    {
+        $this->fixtures('articles', 'taggings', 'tags');
+
+        $article = Article::find($this->articles('testing_js')->id);
+        $origTaggingCount = Tagging::count();
+        $articleTagCount = count($article->tags);
+        $this->assertTrue($articleTagCount > 0);
+
+        $article->clearTags();
+        $article->save();
+
+        // join records deleted, but tags themselves still exist
+        $this->assertEquals($origTaggingCount - $articleTagCount, Tagging::count());
+        $this->assertEquals('0', Article::find($this->articles('testing_js')->id)->tagCount);
+        $this->assertTrue(Tag::count() > 0);
+    }
+
+    // destroy loads each join record and calls destroy() on it
+    public function testClearAssociationsDestroy()
+    {
+        $this->fixtures('articles', 'taggings', 'tags');
+
+        // build the association directly with dependent => destroy
+        $assoc = Mad_Model_Association_Base::factory('hasMany', 'Tags',
+            array('through' => 'Taggings', 'dependent' => 'destroy'),
+            new Article);
+        $this->assertEquals('destroy', $assoc->getOptions()['dependent']);
+
+        $article = Article::find($this->articles('testing_js')->id);
+        $origTaggingCount = Tagging::count();
+        $articleTagCount = count($article->tags);
+        $this->assertTrue($articleTagCount > 0);
+
+        // call destroyDependent directly on the association with destroy mode
+        $assoc = Mad_Model_Association_Base::factory('hasMany', 'Tags',
+            array('through' => 'Taggings', 'dependent' => 'destroy'),
+            $article);
+        $assoc->destroyDependent();
+
+        // join records destroyed individually, tags still exist
+        $this->assertEquals($origTaggingCount - $articleTagCount, Tagging::count());
+        $this->assertTrue(Tag::count() > 0);
+    }
+
+    // invalid dependent option throws
+    public function testClearAssociationsInvalidDependent()
+    {
+        $this->fixtures('articles', 'taggings', 'tags');
+
+        $article = Article::find($this->articles('testing_js')->id);
+        $assoc = Mad_Model_Association_Base::factory('hasMany', 'Tags',
+            array('through' => 'Taggings', 'dependent' => 'invalid'),
+            $article);
+
+        $this->expectException('Mad_Model_Association_Exception');
+        $assoc->destroyDependent();
     }
 
     /*##########################################################################

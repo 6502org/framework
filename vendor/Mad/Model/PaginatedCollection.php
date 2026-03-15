@@ -88,6 +88,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
      * Count elements in the array. This has to force load all the object into memory
      * to get the count.
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->_collection);
@@ -101,6 +102,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
     /**
      * Get the current object from the collection
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         if ($this->_collection instanceof Mad_Model_Collection) {
@@ -113,6 +115,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
     /**
      * Get the current position in the Collection
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         if ($this->_collection instanceof Mad_Model_Collection) {
@@ -125,6 +128,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
     /**
      * Get the next element on the Collection
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         if ($this->_collection instanceof Mad_Model_Collection) {
@@ -137,6 +141,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
     /**
      * Rewind collection to first element
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         if ($this->_collection instanceof Mad_Model_Collection) {
@@ -150,6 +155,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
      * Check if the current element exists
      * @return  boolean
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         if ($this->_collection instanceof Mad_Model_Collection) {
@@ -169,6 +175,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
      * @param   int     $offset
      * @return  boolean
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->_collection[$offset]);
@@ -179,6 +186,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
      * 
      * @param   int     $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if ($this->offsetExists($offset)) {
@@ -192,6 +200,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
      * @param   int     $offset
      * @param   mixed   $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value) {}
 
     /**
@@ -199,6 +208,7 @@ class Mad_Model_PaginatedCollection implements ArrayAccess, Iterator, Countable
      * 
      * @param   int     $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset) {}
 
 

@@ -16,16 +16,16 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      support
  * @category   Mad
  * @package    Mad_Support
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('support')]
 class Mad_Support_InflectorTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         Mad_Support_Inflector::clearCache();
     }
@@ -78,8 +78,10 @@ class Mad_Support_InflectorTest extends Mad_Test_Unit
 
     public function testTitleize()
     {
-        return true;
-        $this->markTestSkipped();
+        $this->assertEquals('Active Record',  Mad_Support_Inflector::titleize('ActiveRecord'));
+        $this->assertEquals('Active Record',  Mad_Support_Inflector::titleize('active_record'));
+        $this->assertEquals('Action Web Service', Mad_Support_Inflector::titleize('ActionWebService'));
+        $this->assertEquals('Action Web Service', Mad_Support_Inflector::titleize('action_web_service'));
     }
 
     // data given to underscore() MUST be camelized already
@@ -164,14 +166,28 @@ class Mad_Support_InflectorTest extends Mad_Test_Unit
 
     public function testForeignKey()
     {
-        return true;
-        $this->markTestSkipped();
+        $this->assertEquals('message_id',  Mad_Support_Inflector::foreignKey('Message'));
+        $this->assertEquals('messageid',   Mad_Support_Inflector::foreignKey('Message', false));
+        $this->assertEquals('post_id',     Mad_Support_Inflector::foreignKey('Admin_Post'));
+        $this->assertEquals('account_id',  Mad_Support_Inflector::foreignKey('MyApplication_Billing_Account'));
     }
 
     public function testOrdinalize()
     {
-        return true;
-        $this->markTestSkipped();
+        $this->assertEquals('1st',    Mad_Support_Inflector::ordinalize(1));
+        $this->assertEquals('2nd',    Mad_Support_Inflector::ordinalize(2));
+        $this->assertEquals('3rd',    Mad_Support_Inflector::ordinalize(3));
+        $this->assertEquals('4th',    Mad_Support_Inflector::ordinalize(4));
+        $this->assertEquals('11th',   Mad_Support_Inflector::ordinalize(11));
+        $this->assertEquals('12th',   Mad_Support_Inflector::ordinalize(12));
+        $this->assertEquals('13th',   Mad_Support_Inflector::ordinalize(13));
+        $this->assertEquals('21st',   Mad_Support_Inflector::ordinalize(21));
+        $this->assertEquals('22nd',   Mad_Support_Inflector::ordinalize(22));
+        $this->assertEquals('23rd',   Mad_Support_Inflector::ordinalize(23));
+        $this->assertEquals('100th',  Mad_Support_Inflector::ordinalize(100));
+        $this->assertEquals('101st',  Mad_Support_Inflector::ordinalize(101));
+        $this->assertEquals('1002nd', Mad_Support_Inflector::ordinalize(1002));
+        $this->assertEquals('1003rd', Mad_Support_Inflector::ordinalize(1003));
     }
 
 

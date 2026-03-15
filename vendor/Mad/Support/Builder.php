@@ -17,6 +17,7 @@
 class Mad_Support_Builder
 {
     protected $_xml = null;
+    protected $_options = array();
 
     /**
      * @param   array   $options
@@ -81,7 +82,7 @@ class Mad_Support_Builder
         foreach ($attributes as $attrKey => $attrValue) {
             $this->_xml->writeAttribute($attrKey, $attrValue);
         }
-        $this->_xml->text($value);
+        $this->_xml->text((string)$value);
         return $this;
     }
     

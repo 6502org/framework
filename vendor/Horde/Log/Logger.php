@@ -147,7 +147,7 @@ class Horde_Log_Logger
      */
     public function hasLevel($name)
     {
-        return (boolean)array_search($name, $this->_levels);
+        return (bool)array_search($name, $this->_levels);
     }
 
     /**

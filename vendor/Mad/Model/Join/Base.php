@@ -21,6 +21,7 @@ class Mad_Model_Join_Base
      * @var Mad_Model_Base
      */
     protected $_model = null;
+    protected $_cachedRecord = null;
 
     /**
      * The column names with alias column. Select columns will incorporate

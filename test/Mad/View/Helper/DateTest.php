@@ -16,16 +16,16 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      view
  * @category   Mad
  * @package    Mad_View
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('view')]
 class Mad_View_Helper_DateTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->helper = new Mad_View_Helper_Date(new Mad_View_Base());
     }
@@ -124,15 +124,13 @@ class Mad_View_Helper_DateTest extends Mad_Test_Unit
                             $this->helper->distanceOfTimeInWords($from + (4*3600), $from));
         $this->assertEquals('less than 20 seconds',
                             $this->helper->distanceOfTimeInWords($from + 19, $from, true));
-        
-        return $this->markTestSkipped();
-        
-        // test with integers (not yet passing)
-        $this->assertEquals('less than a minute',
+
+        // test with integers (distance in seconds)
+        $this->assertEquals('1 minute',
                             $this->helper->distanceOfTimeInWords(59));
         $this->assertEquals('about 1 hour',
                             $this->helper->distanceOfTimeInWords(60*60));
-        $this->assertEquals('less than a minute',
+        $this->assertEquals('1 minute',
                             $this->helper->distanceOfTimeInWords(0, 59));
         $this->assertEquals('about 1 hour',
                             $this->helper->distanceOfTimeInWords(60*60, 0));

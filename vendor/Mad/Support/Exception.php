@@ -25,7 +25,7 @@ class Mad_Support_Exception extends Exception
     public function __construct($message = '', $code = 0, 
                                 $file = null, $line = null) 
     {
-        parent::__construct($message, $code);
+        parent::__construct((string)$message, (int)$code);
 
         if ($file !== null) { $this->file = $file; }
         if ($line !== null) { $this->line = $line; }

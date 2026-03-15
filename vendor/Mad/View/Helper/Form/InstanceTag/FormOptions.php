@@ -30,7 +30,7 @@ class Mad_View_Helper_Form_InstanceTag_FormOptions extends Mad_View_Helper_Form_
             $optionTags = "<option value=\"\"></option>\n" . $optionTags;
         }
         
-        if (! strlen($value) && isset($options['prompt'])) {
+        if (! strlen((string)$value) && isset($options['prompt'])) {
             $option = is_string($options['prompt']) ? $options['prompt'] : 'Please select';
             $optionTags = "<option value=\"\">$option</option>\n" . $optionTags;
         } 

@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      support
  * @category   Mad
  * @package    Support
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('support')]
 class Mad_Support_ArrayObjectTest extends Mad_Test_Unit
 {
     public function testIsAnInstanceofArrayObject()
@@ -136,12 +136,14 @@ class Mad_Support_ArrayObjectTest extends Mad_Test_Unit
     {
         $o = new Mad_Support_ArrayObject();
         $o->update(array());
+        $this->assertTrue(true);
     }
     
     public function testUpdateDoesNotThrowWhenArgumentIsTraversable()
     {
         $o = new Mad_Support_ArrayObject();
         $o->update(new ArrayObject());
+        $this->assertTrue(true);
     }
     
     public function testUpdateMergesNewValuesFromArayInArgument()

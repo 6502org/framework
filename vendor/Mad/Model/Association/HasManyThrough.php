@@ -44,7 +44,7 @@ class Mad_Model_Association_HasManyThrough extends Mad_Model_Association_Collect
         $valid = array('className', 'foreignKey', 'associationForeignKey', 
                        'primaryKey', 'associationPrimaryKey', 'include', 
                        'select', 'conditions', 'order', 'finderSql',
-                       'through', 'dependent' => 'nullify');
+                       'through', 'dependent' => 'deleteAll');
 
         $this->_options   = Mad_Support_Base::assertValidKeys($options, $valid);
         $this->_assocName = $assocName;
@@ -114,7 +114,7 @@ class Mad_Model_Association_HasManyThrough extends Mad_Model_Association_Collect
             $exists = $this->_conn->selectValue($sql);
             if ($exists) continue;
 
-            $sql = "INSERT IGNORE INTO $joinTable ( ".
+            $sql = "INSERT INTO $joinTable ( ".
                    "  $fkName, $assocFkName ".
                    ") VALUES ( ".
                    "  ".$this->_conn->quote($fkValue).

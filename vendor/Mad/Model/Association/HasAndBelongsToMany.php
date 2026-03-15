@@ -107,7 +107,7 @@ class Mad_Model_Association_HasAndBelongsToMany extends Mad_Model_Association_Co
             $exists = $this->_conn->selectValue($sql);
             if ($exists) continue;
 
-            $sql = "INSERT IGNORE INTO $joinTable ( ".
+            $sql = "INSERT INTO $joinTable ( ".
                    "  $fkName, $assocFkName ".
                    ") VALUES ( ".
                    "  ".$this->_conn->quote($fkValue).

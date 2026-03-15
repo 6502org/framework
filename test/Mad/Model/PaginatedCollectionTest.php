@@ -16,17 +16,17 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_PaginatedCollectionTest extends Mad_Test_Unit
 {
     // set up new db by inserting dummy data into the db
-    public function setUp()
+    public function setUp(): void
     {
         $this->fixtures('unit_tests', 'unit_tests_more');
 
@@ -425,7 +425,7 @@ XML;
         $tests     = Article::find('all', array('offset' => '2', 'limit' => '2'));
         $models    = new Mad_Model_PaginatedCollection($tests, 2, 2, $testCount);
 
-        $this->assertContains('<articles>', $models->toXml(array('skipTypes' => true)));
+        $this->assertStringContainsString('<articles>', $models->toXml(array('skipTypes' => true)));
     }
 
     /*##########################################################################

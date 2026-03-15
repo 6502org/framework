@@ -351,14 +351,16 @@ abstract class Mad_Model_Base extends Mad_Support_Object
         // association methods
         $this->_initAssociations();
         if (isset($this->_associationMethods[$name])) {
-            return count($this->_get($name)) > 0;
+            $value = $this->_get($name);
+            if (is_array($value) || $value instanceof \Countable) {
+                return count($value) > 0;
+            }
+            return $value !== null;
 
-        // active-record attribue
+        // active-record attribute
         } else {
             return isset($this->_attributes[$name]);
         }
-
-        return isset($this->_attributes[$name]);
     }
 
     /**
@@ -491,11 +493,8 @@ abstract class Mad_Model_Base extends Mad_Support_Object
         // $spec is empty: $spec defaults to MAD_ENV string like "development"
         // keep going to read YAML for this environment string
         if (empty($spec)) {
-            if ( !defined('MAD_ENV') || !MAD_ENV ) {
-                throw new Mad_Model_Exception('Adapter Not Specified');
-            }
             $spec = MAD_ENV;
-        } 
+        }
 
         // $spec is string: read YAML config for environment named by string
         // keep going to process the resulting array
@@ -504,9 +503,15 @@ abstract class Mad_Model_Base extends Mad_Support_Object
             $spec = $config[$spec];
         }
 
-        // $spec is an associative array            
+        // $spec is an associative array
         if (is_array($spec)) {
-          
+
+            // resolve relative database paths against MAD_ROOT (SQLite only)
+            if (isset($spec['adapter']) && $spec['adapter'] == 'pdo_sqlite' &&
+                isset($spec['database']) && $spec['database'][0] != '/' && $spec['database'][0] != ':') {
+                $spec['database'] = MAD_ROOT . '/' . $spec['database'];
+            }
+
             // validation of array is handled by horde_db
             self::$_connectionSpec = $spec;
 
@@ -1086,11 +1091,17 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      * @param   array   $bindVars
      * @throws  Mad_Model_Exception_RecordNotFound
      */
-    public static function find($type, $options=null, $bindVars=null)
+    /**
+     * @return  string
+     */
+    public static function className()
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        return static::class;
+    }
+
+    public static function find($type, $options=array(), $bindVars=null)
+    {
+        $m = new static;
         return $m->_find($type, $options, $bindVars);
     }
 
@@ -1104,11 +1115,9 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      * @param   array $options
      * @param   array $bindVars
      */
-    public static function first($options=null, $bindVars=null)
+    public static function first($options=array(), $bindVars=null)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_find('first', $options, $bindVars);
     }
 
@@ -1118,11 +1127,9 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      *  $binderCnt = Binder::count(array('name' => 'Stubbed Images'));
      * </code>
      */
-    public static function count($options=null, $bindVars=null) 
+    public static function count($options=array(), $bindVars=null) 
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_count($options, $bindVars);
     }
 
@@ -1155,11 +1162,9 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      * @param   string  $sql
      * @param   array   $bindVars
      */
-    protected static function findBySql($type, $sql, $bindVars=null)
+    public static function findBySql($type, $sql, $bindVars=null)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_findBySql($type, $sql, $bindVars);
     }
 
@@ -1180,11 +1185,9 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      * @param   string  $sql
      * @param   array   $bindVars
      */
-    protected static function countBySql($sql, $bindVars=null)
+    public static function countBySql($sql, $bindVars=null)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_countBySql($sql, $bindVars);
     }
 
@@ -1195,11 +1198,9 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      * @param   array   $bindVars
      * @return  Mad_Model_Collection
      */
-    protected static function paginate($options=null, $bindVars=null)
+    public static function paginate($options=array(), $bindVars=null)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_paginate($options, $bindVars);
     }
 
@@ -1215,9 +1216,7 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      */
     public static function exists($id)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_exists($id);
     }
 
@@ -1240,9 +1239,7 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      */
     public static function create($attributes)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_create($attributes);
     }
 
@@ -1265,9 +1262,7 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      */
     public static function update($id, $attributes=null)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_update($id, $attributes);
     }
 
@@ -1289,9 +1284,7 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      */
     public static function delete($id)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_delete($id);
     }
 
@@ -1310,9 +1303,7 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      */
     public static function updateAll($set, $conditions=null, $bindVars=null)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_updateAll($set, $conditions, $bindVars);
     }
 
@@ -1328,9 +1319,7 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      */
     public static function deleteAll($conditions=null, $bindVars=null)
     {
-        // hack to get name of this class (because of static)
-        $bt = debug_backtrace();
-        $m = new $bt[1]['class'];
+        $m = new static;
         return $m->_deleteAll($conditions, $bindVars);
     }
 
@@ -1361,6 +1350,12 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      */
     public function save()
     {
+        // zero is not a valid primary key
+        $pk = $this->primaryKey();
+        if ($pk && ($this->_attributes[$pk] === 0 || $this->_attributes[$pk] === '0')) {
+            throw new Mad_Model_Exception("Primary key cannot be zero");
+        }
+
         // All saves are atomic - only start transaction if one hasn't been
         $started = $this->connection->transactionStarted();
         if (!$started) { $this->connection->beginDbTransaction(); }
@@ -1492,7 +1487,7 @@ abstract class Mad_Model_Base extends Mad_Support_Object
      */
     public function sanitizeSql($sql, $bindVars)
     {
-        preg_match_all("/(:\w+)/", $sql, $matches);
+        preg_match_all("/(:\w+)/", (string)$sql, $matches);
         if (!isset($matches[1])) return;
 
         foreach ($matches[1] as $replacement) {

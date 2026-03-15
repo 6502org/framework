@@ -16,31 +16,27 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      madness
  * @category   Mad
  * @package    Mad_Madness
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('madness')]
 class Mad_Madness_ConfigurationTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         $config = Mad_Madness_Configuration::getInstance();
         $config->mailer->deliveryMethod = 'test';
     }
     
-    public function tearDown()
+    public function tearDown(): void
     {
         $config = Mad_Madness_Configuration::getInstance();
         $config->mailer->deliveryMethod = 'test';
     }
     
-    public function testSetControllerConfiguration()
-    {
-    }
-
     public function testSetMailerConfiguration()
     {
         $config = Mad_Madness_Configuration::getInstance();
@@ -51,10 +47,6 @@ class Mad_Madness_ConfigurationTest extends Mad_Test_Unit
         $config->mailer->deliveryMethod = 'sendmail';
         $config->end();
         $this->assertEquals('sendmail', Mad_Mailer_Base::$deliveryMethod);
-    }
-
-    public function testSetViewConfiguration()
-    {
     }
 
     public function testSetModelConfiguration()
@@ -69,7 +61,4 @@ class Mad_Madness_ConfigurationTest extends Mad_Test_Unit
         $this->assertFalse(Mad_Model_Base::$cacheTables);
     }
 
-    public function testSetTestConfiguration()
-    {
-    }
 }

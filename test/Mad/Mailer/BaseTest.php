@@ -16,16 +16,16 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      mailer
  * @category   Mad
  * @package    Mad_Mailer
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('mailer')]
 class Mad_Mailer_BaseTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->fixtures('users');
     }
@@ -36,22 +36,22 @@ class Mad_Mailer_BaseTest extends Mad_Test_Unit
         $result = $n->createConfirm(User::find(1));
 
         // result has both headers/body
-        $this->assertContains('Date:',      $result);
-        $this->assertContains('Dear Mike,', $result);
+        $this->assertStringContainsString('Date:',      $result);
+        $this->assertStringContainsString('Dear Mike,', $result);
         $this->assertEquals('derek@maintainable.com', $n->getRecipients());
         $this->assertEquals('Confirmation for Mike',  $n->getSubject());
     
         // headers
-        $this->assertContains('Date:',                      $n->getHeaders());
-        $this->assertContains('From: test@example.com',     $n->getHeaders());
-        $this->assertContains('Cc: test1@example.com',      $n->getHeaders());
-        $this->assertContains('Mime-Version: 1.0',          $n->getHeaders());
-        $this->assertNotContains('Bcc:',                    $n->getHeaders());
+        $this->assertStringContainsString('Date:',                      $n->getHeaders());
+        $this->assertStringContainsString('From: test@example.com',     $n->getHeaders());
+        $this->assertStringContainsString('Cc: test1@example.com',      $n->getHeaders());
+        $this->assertStringContainsString('Mime-Version: 1.0',          $n->getHeaders());
+        $this->assertStringNotContainsString('Bcc:',                    $n->getHeaders());
     
         // body
-        $this->assertContains('Content-Type: text/plain; charset="utf-8"', $n->getBody());
-        $this->assertContains('Dear Mike,',              $n->getBody());
-        $this->assertContains('http://maintainable.com', $n->getBody());
+        $this->assertStringContainsString('Content-Type: text/plain; charset="utf-8"', $n->getBody());
+        $this->assertStringContainsString('Dear Mike,',              $n->getBody());
+        $this->assertStringContainsString('http://maintainable.com', $n->getBody());
     }
 
     public function testCreateUsingArrayAttributes()
@@ -60,21 +60,21 @@ class Mad_Mailer_BaseTest extends Mad_Test_Unit
         $result = $n->createSend(User::find(1));
     
         // result has both headers/body
-        $this->assertContains('Date:',      $result);
-        $this->assertContains('Dear Mike,', $result);
+        $this->assertStringContainsString('Date:',      $result);
+        $this->assertStringContainsString('Dear Mike,', $result);
         $this->assertEquals('derek@maintainable.com, Mike Naberezny <mike@maintainable.com>', $n->getRecipients());
         $this->assertEquals('Confirmation for Mike',  $n->getSubject());
     
-        $this->assertContains('From: test@example.com',                    $n->getHeaders());
-        $this->assertContains('Cc: test1@example.com, test2@example.com',  $n->getHeaders());
-        $this->assertContains('Bcc: test3@example.com, test4@example.com', $n->getHeaders());
-        $this->assertContains('Mime-Version: 1.0',                         $n->getHeaders());
-        $this->assertContains('Organization: Maintainable, LLC',           $n->getHeaders());
+        $this->assertStringContainsString('From: test@example.com',                    $n->getHeaders());
+        $this->assertStringContainsString('Cc: test1@example.com, test2@example.com',  $n->getHeaders());
+        $this->assertStringContainsString('Bcc: test3@example.com, test4@example.com', $n->getHeaders());
+        $this->assertStringContainsString('Mime-Version: 1.0',                         $n->getHeaders());
+        $this->assertStringContainsString('Organization: Maintainable, LLC',           $n->getHeaders());
     
         // body
-        $this->assertContains('Content-Type: text/plain; charset="utf-8"',   $n->getBody());
-        $this->assertContains('Dear Mike,',              $n->getBody());
-        $this->assertContains('http://maintainable.com', $n->getBody());
+        $this->assertStringContainsString('Content-Type: text/plain; charset="utf-8"',   $n->getBody());
+        $this->assertStringContainsString('Dear Mike,',              $n->getBody());
+        $this->assertStringContainsString('http://maintainable.com', $n->getBody());
     }
 
     public function testSendWithAttachments()
@@ -91,23 +91,23 @@ class Mad_Mailer_BaseTest extends Mad_Test_Unit
 
         
         // result has both headers/body
-        $this->assertContains('Dear Derek,', $result);
+        $this->assertStringContainsString('Dear Derek,', $result);
         $this->assertEquals('derek@maintainable.com', $n->getRecipients());
         $this->assertEquals('Confirmation for test',  $n->getSubject());
 
         // headers
-        $this->assertContains('Date:',                      $n->getHeaders());
-        $this->assertContains('From: test@example.com',     $n->getHeaders());
-        $this->assertContains('Mime-Version: 1.0',          $n->getHeaders());
+        $this->assertStringContainsString('Date:',                      $n->getHeaders());
+        $this->assertStringContainsString('From: test@example.com',     $n->getHeaders());
+        $this->assertStringContainsString('Mime-Version: 1.0',          $n->getHeaders());
 
         // body
-        $this->assertContains('Content-Type: text/plain; charset="utf-8"', $n->getBody());
-        $this->assertContains('Dear Derek,',             $n->getBody());
-        $this->assertContains('The Maintainable Team',   $n->getBody());
+        $this->assertStringContainsString('Content-Type: text/plain; charset="utf-8"', $n->getBody());
+        $this->assertStringContainsString('Dear Derek,',             $n->getBody());
+        $this->assertStringContainsString('The Maintainable Team',   $n->getBody());
         
         // attachments
-        $this->assertContains('Content-Transfer-Encoding: base64',                            $n->getBody());
-        $this->assertContains('Content-Disposition: attachment; filename="check_it_out.txt"', $n->getBody());
+        $this->assertStringContainsString('Content-Transfer-Encoding: base64',                            $n->getBody());
+        $this->assertStringContainsString('Content-Disposition: attachment; filename="check_it_out.txt"', $n->getBody());
     }
 
     public function testSendWithUniqueAttachmentNames()
@@ -134,16 +134,16 @@ class Mad_Mailer_BaseTest extends Mad_Test_Unit
         $this->assertTrue($result);
     
         // headers
-        $this->assertContains('Date:',                      $n->getHeaders());
-        $this->assertContains('From: test@example.com',     $n->getHeaders());
-        $this->assertContains('Cc: test1@example.com',      $n->getHeaders());
-        $this->assertContains('Mime-Version: 1.0',          $n->getHeaders());
-        $this->assertNotContains('Bcc:',                    $n->getHeaders());
+        $this->assertStringContainsString('Date:',                      $n->getHeaders());
+        $this->assertStringContainsString('From: test@example.com',     $n->getHeaders());
+        $this->assertStringContainsString('Cc: test1@example.com',      $n->getHeaders());
+        $this->assertStringContainsString('Mime-Version: 1.0',          $n->getHeaders());
+        $this->assertStringNotContainsString('Bcc:',                    $n->getHeaders());
     
         // body
-        $this->assertContains('Content-Type: text/plain; charset="utf-8"', $n->getBody());
-        $this->assertContains('Dear Mike,',              $n->getBody());
-        $this->assertContains('http://maintainable.com', $n->getBody());
+        $this->assertStringContainsString('Content-Type: text/plain; charset="utf-8"', $n->getBody());
+        $this->assertStringContainsString('Dear Mike,',              $n->getBody());
+        $this->assertStringContainsString('http://maintainable.com', $n->getBody());
     }
 
 }

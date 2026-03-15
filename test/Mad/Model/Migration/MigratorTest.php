@@ -16,21 +16,22 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_Migration_MigratorTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
+        $this->_connect();
         Mad_Model_Migration_Base::$verbose = false;
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->_conn->initializeSchemaInformation();
         $this->_conn->update("UPDATE schema_info SET version = 0");
@@ -185,11 +186,9 @@ class Mad_Model_Migration_MigratorTest extends Mad_Test_Unit
 
     public function testWithDuplicates()
     {
-        try {
-            $dir = dirname(dirname(dirname(dirname(__FILE__)))).'/fixtures/migrations_with_duplicate/';
-            Mad_Model_Migration_Migrator::up($dir);
-        } catch (Exception $e) { return; }
-        $this->fail('Expected exception wasn\'t raised');
+        $this->expectException('Exception');
+        $dir = dirname(dirname(dirname(dirname(__FILE__)))).'/fixtures/migrations_with_duplicate/';
+        Mad_Model_Migration_Migrator::up($dir);
     }
 
     public function testWithMissingVersionNumbers()

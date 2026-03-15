@@ -1,16 +1,16 @@
 <?php
 /**
- * Stream wrapper to convert markup of mostly-PHP templates 
+ * Stream wrapper to convert markup of mostly-PHP templates
  * into PHP prior to include().
  *
  * @category   Mad
  * @package    Mad_View
- * @copyright  (c) 2007-2009 Maintainable Software, LLC
+ * @copyright  (c) 2007-2008 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
 
 /**
- * Stream wrapper to convert markup of mostly-PHP templates 
+ * Stream wrapper to convert markup of mostly-PHP templates
  * into PHP prior to include().
  *
  * Based in large part on the example at
@@ -18,11 +18,17 @@
  *
  * @category   Mad
  * @package    Mad_View
- * @copyright  (c) 2007-2009 Maintainable Software, LLC
+ * @copyright  (c) 2007-2008 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
 class Mad_View_Stream
 {
+    /**
+     * The current context, set by PHP when the stream is opened.
+     * @var resource
+     */
+    public $context;
+
     /**
      * Force rewriting short tags?  Primarily for testing.
      * @var boolean
@@ -40,12 +46,6 @@ class Mad_View_Stream
      * @var string
      */
     private $data;
-
-    /**
-     * Has the data to stream been processed?
-     * @var boolean
-     */
-    private $processed = false;
 
     /**
      * Stream stats.
@@ -74,8 +74,6 @@ class Mad_View_Stream
         // get the view script source
         $path = str_replace('madview://', '', $path);
         $this->data = file_get_contents($path);
-        $this->processed = false;
-
         /**
          * If reading the file failed, update our local stat store
          * to reflect the real stat of the file, then return on failure
@@ -84,33 +82,33 @@ class Mad_View_Stream
             $this->stat = stat($path);
             return false;
         }
-        
+
         /**
          * file_get_contents() won't update PHP's stat cache, so performing
          * another stat() on it will hit the filesystem again.  Since the file
          * has been successfully read, avoid this and just fake the stat
          * so include() is happy.
          */
+        $this->_process();
+
         $this->stat = array('mode' => 0100777, 'size' => strlen($this->data));
         return true;
     }
 
     /**
-     * Process the $this->data before returning it.
+     * Process $this->data after opening.
      */
     private function _process()
     {
         /**
          * If short open tags is off, convert <? ?> to long-form <?php ?>
          * and <?= ?> to long-form <?php echo ?>.
-         * 
-         * Does not covert ASP-style <%= tags.
          */
         if ($this->forceShortTagRewrite || (! ini_get('short_open_tag'))) {
-	        $find    = array('/\<\? (.*?)(\?\>){1}?/s',
-	                         '/\<\?\= (.*?)(\?\>){1}?/s');
-	        $replace = array('<?php $1?>',
-	                         '<?php echo $1?>');
+            $find    = array('/\<\? (.*?)(\?\>){1}?/s',
+                             '/\<\?\= (.*?)(\?\>){1}?/s');
+            $replace = array('<?php $1?>',
+                             '<?php echo $1?>');
             $this->data = preg_replace($find, $replace, $this->data);
         }
 
@@ -121,19 +119,6 @@ class Mad_View_Stream
             $this->data = preg_replace($find, $replace, $this->data);
         }
 
-        /* Convert ['foo' => 'bar'] to array('foo' => 'bar'). Also works for
-         * nested arrays: ['foo' => ['bar' => 'baz']].
-         */
-        if (strpos($this->data, '[') !== false) {
-            $find    = '/\[([^]]+?=>[^]]+?)\]{1}?/s';
-            $replace = 'array($1)';
-            $count = 0;
-            do {
-                $this->data = preg_replace($find, $replace, $this->data, -1, $count);
-            } while ($count);
-        }
-        
-        $this->processed = true;
     }
 
     /**
@@ -141,8 +126,6 @@ class Mad_View_Stream
      */
     public function stream_read($count)
     {
-        if (! $this->processed) { $this->_process(); }
-                
         $ret = substr($this->data, $this->pos, $count);
         $this->pos += strlen($ret);
         return $ret;
@@ -177,8 +160,6 @@ class Mad_View_Stream
      */
     public function stream_seek($offset, $whence)
     {
-        if (! $this->processed) { $this->_process(); }
-      
         switch ($whence) {
             case SEEK_SET:
                 if ($offset < strlen($this->data) && $offset >= 0) {
@@ -210,6 +191,10 @@ class Mad_View_Stream
             default:
                 return false;
         }
+    }
+
+    public function stream_set_option($opt, $arg1, $arg2) {
+        return false;
     }
 
     /**

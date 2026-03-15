@@ -35,6 +35,12 @@ class Mad_Mailer_Base
     private $_attachments = array();
 
     /**
+     * MIME boundary string for multipart messages
+     * @var string
+     */
+    private $_mimeBoundary = null;
+
+    /**
      * Comma separated recipient string
      * @var string
      */

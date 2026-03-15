@@ -2,19 +2,23 @@ development:
   database: madmodel
   adapter:  pdo_mysql
   host:     localhost
-  username: root
+  username:
   password:
 
 test:
   database: madmodel_test
   adapter:  pdo_mysql
   host:     localhost
-  username: root
+  username:
   password:
+
+test_sqlite:
+  adapter:  pdo_sqlite
+  database: db/tests/madmodel_test.sqlite3
 
 production:
   database: madmodel
   adapter:  pdo_mysql
   host:     localhost
-  username: root
+  username:
   password:

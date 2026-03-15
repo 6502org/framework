@@ -19,17 +19,17 @@ if (!defined('MAD_ROOT')) {
  * Represents an HTTP request to the server. This class handles all headers/cookies/session
  * data so that it all has one point of entry for being written/retrieved.
  *
- * @group      controller
  * @category   Mad
  * @package    Mad_Controller
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('controller')]
 class Mad_Controller_Request_HttpTest extends Mad_Test_Unit
 {
     // simulate http request data
-    public function setUp()
+    public function setUp(): void
     {
         $this->_req = new Mad_Controller_Request_Mock();
     }

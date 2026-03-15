@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      madness
  * @category   Mad
  * @package    Mad_Madness
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('madness')]
 class Mad_Madness_InitializerTest extends Mad_Test_Unit
 {
     public function testRun()

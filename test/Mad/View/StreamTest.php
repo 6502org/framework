@@ -24,7 +24,7 @@ if (!defined('MAD_ROOT')) {
  */
 class Mad_View_StreamTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         Mad_View_Stream::install();
     }

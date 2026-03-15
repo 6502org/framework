@@ -108,7 +108,7 @@ class Mad_View_Helper_Tag extends Mad_View_Helper_Base
      */
     public function escapeOnce($html)
     {
-        return $this->fixDoubleEscape(htmlspecialchars($html));
+        return $this->fixDoubleEscape(htmlspecialchars($html, ENT_COMPAT, 'UTF-8'));
     }
 
     /**

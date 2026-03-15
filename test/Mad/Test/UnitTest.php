@@ -111,7 +111,7 @@ class Mad_Test_UnitTest extends Mad_Test_Unit
             $diff = $this->assertDifference('UnitTest::count()');
             $diff->end();
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
 
     public function testAssertNoDifferenceTrue()
@@ -129,7 +129,7 @@ class Mad_Test_UnitTest extends Mad_Test_Unit
                                        'email_value'   => 'test@example.com'));
             $diff->end();
         } catch (Exception $e) {}
-        $this->assertTrue($e instanceof PHPUnit_Framework_AssertionFailedError);
+        $this->assertTrue($e instanceof \PHPUnit\Framework\AssertionFailedError);
     }
 
 

@@ -18,18 +18,18 @@ if (!defined('MAD_ROOT')) {
 /**
  * Used for functional testing of controller classes
  *
- * @group      controller
  * @category   Mad
  * @package    Mad_Controller
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('controller')]
 class Mad_Controller_StatusCodesTest extends Mad_Test_Unit
 {
     public function testStatusCodesPropertyIsInitializedByClass()
     {
-        $this->assertInternalType('array', Mad_Controller_StatusCodes::$statusCodes);
+        $this->assertIsArray(Mad_Controller_StatusCodes::$statusCodes);
         $this->assertTrue(isset(Mad_Controller_StatusCodes::$statusCodes[200]));
     }
 

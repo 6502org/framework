@@ -61,7 +61,7 @@ class Mad_Model_Association_BelongsTo extends Mad_Model_Association_Proxy
      */
     public function save()
     {
-        if ($this->isLoaded()) {
+        if ($this->isChanged()) {
             $baseModel   = $this->getModel();
             $assocModel  = $this->getObject();
             $fkName      = $this->getFkName();

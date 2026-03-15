@@ -16,16 +16,16 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      view
  * @category   Mad
  * @package    Mad_View
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('view')]
 class Mad_View_Helper_BenchmarkTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->view = new Mad_View_Base();
         $this->view->addHelper(new Mad_View_Helper_Benchmark($this->view));
@@ -41,6 +41,7 @@ class Mad_View_Helper_BenchmarkTest extends Mad_Test_Unit
 
         $bench = $this->view->benchmark();
         $bench->end();
+        $this->assertTrue(true);
     }
 
     public function testDefaults()
@@ -80,6 +81,6 @@ class Mad_View_Helper_BenchmarkTest extends Mad_Test_Unit
     {
         $last = end($this->mock->events);        
         $this->assertEquals(strtoupper($level), $last['levelName']);
-        $this->assertRegExp("/^$message \(.*\)$/", $last['message']);
+        $this->assertMatchesRegularExpression("/^$message \(.*\)$/", $last['message']);
     }
 }

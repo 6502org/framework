@@ -8,7 +8,7 @@ The purpose of this fork is only to update the framework as needed by 6502.org. 
 
 The framework based around the Model-View-Controller pattern
 and modeled after Ruby on Rails 1.2.  It is compatible with PHP
-version 5.1.4 and later.
+version 5.4 and later.
 
 Repository Layout
 -----------------
@@ -72,10 +72,19 @@ to shrink in this way.
 Running Tests
 -------------
 
-The repository has the same layout as an application.  The framework tests
-are run the same way as an application's tests would be.  Change to the
-`test/` directory and run `phpunit AllTests`.
+The tests require MySQL and PHPUnit.  On Ubuntu:
 
-Before you can run the tests, you need to create a database and configure
-the connection in `database.yml`.  You also need to build the tests database
-using the file `db/tests/madmodel_test.sql`.
+    sudo apt install mysql-server phpunit
+
+Create the test database and grant access:
+
+    sudo mysql -e "CREATE DATABASE madmodel_test"
+    sudo mysql -e "GRANT ALL ON madmodel_test.* TO ''@'localhost'"
+
+Load the test schema:
+
+    mysql madmodel_test < db/tests/madmodel_test.sql
+
+Run the tests:
+
+    ./script/task test

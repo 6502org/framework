@@ -18,17 +18,17 @@ if (!defined('MAD_ROOT')) {
 /**
  * @todo Tests for sanitizeSql()
  * 
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
 {
     // set up new db by inserting dummy data into the db
-    public function setUp()
+    public function setUp(): void
     {
         $this->fixtures('companies', 'users', 'articles', 'comments', 'unit_tests');
     }
@@ -43,8 +43,8 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         $user = new User;
         $xml  = $user->toXml();
         
-        $this->assertContains('<user>',  $xml);
-        $this->assertContains('</user>', $xml);
+        $this->assertStringContainsString('<user>',  $xml);
+        $this->assertStringContainsString('</user>', $xml);
     }
 
     public function testShouldSerializeDefaultRootWithNamespace()
@@ -52,8 +52,8 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         $user = new User;
         $xml  = $user->toXml(array('namespace' => "http://xml.rubyonrails.org/contact"));
                 
-        $this->assertContains('<user xmlns="http://xml.rubyonrails.org/contact">',  $xml);
-        $this->assertContains('</user>', $xml);
+        $this->assertStringContainsString('<user xmlns="http://xml.rubyonrails.org/contact">',  $xml);
+        $this->assertStringContainsString('</user>', $xml);
     }
 
     public function testShouldSerializeCustomRoot()
@@ -61,8 +61,8 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         $user = new User;
         $xml  = $user->toXml(array('root' => "xml_contact"));
         
-        $this->assertContains('<xml-contact>',  $xml);
-        $this->assertContains('</xml-contact>', $xml);
+        $this->assertStringContainsString('<xml-contact>',  $xml);
+        $this->assertStringContainsString('</xml-contact>', $xml);
     }
 
     public function testShouldAllowUndasherizedTags()
@@ -70,9 +70,9 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         $user = new User;
         $xml  = $user->toXml(array('root' => "xml_contact", 'dasherize' => false));
 
-        $this->assertContains('<xml_contact>',  $xml);
-        $this->assertContains('</xml_contact>', $xml);
-        $this->assertContains('<created_at',    $xml);
+        $this->assertStringContainsString('<xml_contact>',  $xml);
+        $this->assertStringContainsString('</xml_contact>', $xml);
+        $this->assertStringContainsString('<created_at',    $xml);
     }
 
 
@@ -84,43 +84,43 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
     {
         $xml = User::find(1)->toXml();
         
-        $this->assertContains('<name>Mike Naberezny</name>', $xml);
+        $this->assertStringContainsString('<name>Mike Naberezny</name>', $xml);
     }
 
     public function testShouldSerializeInteger()
     {
         $xml = User::find(1)->toXml();
         
-        $this->assertContains('<id type="integer">1</id>', $xml);
+        $this->assertStringContainsString('<id type="integer">1</id>', $xml);
     }
 
     public function testShouldSerializeBinary()
     {
         $xml = UnitTest::find(1)->toXml();
 
-        $this->assertContains('c29tZSBibG9iIGRhdGE=</blob-value>',            $xml);
-        $this->assertContains('<blob-value encoding="base64" type="binary">', $xml);
+        $this->assertStringContainsString('c29tZSBibG9iIGRhdGE=</blob-value>',            $xml);
+        $this->assertStringContainsString('<blob-value encoding="base64" type="binary">', $xml);
     }
 
     public function testShouldSerializeDate()
     {
         $xml = User::find(1)->toXml();
 
-        $this->assertContains('<created-on type="date">2008-01-01</created-on>', $xml);
+        $this->assertStringContainsString('<created-on type="date">2008-01-01</created-on>', $xml);
     }
 
     public function testShouldSerializeDatetime()
     {
         $xml = User::find(1)->toXml();
 
-        $this->assertContains('<created-at type="datetime">2008-01-01T20:20:00+00:00</created-at>', $xml);
+        $this->assertStringContainsString('<created-at type="datetime">2008-01-01T20:20:00+00:00</created-at>', $xml);
     }
 
     public function testShouldSerializeBoolean()
     {
         $xml = User::find(1)->toXml();
 
-        $this->assertContains('<approved type="boolean">true</approved>', $xml);
+        $this->assertStringContainsString('<approved type="boolean">true</approved>', $xml);
     }
 
 
@@ -132,7 +132,7 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
     {
         $user = new User(array('name' => null));
         $xml = $user->toXml();
-        $this->assertContains('<name nil="true"></name>', $xml);
+        $this->assertStringContainsString('<name nil="true"></name>', $xml);
     }
 
     public function testShouldSerializeNullInteger()
@@ -140,7 +140,7 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         $user = new User(array('id' => null));
         $xml = $user->toXml();
 
-        $this->assertContains('<id type="integer" nil="true"></id>', $xml);
+        $this->assertStringContainsString('<id type="integer" nil="true"></id>', $xml);
     }
 
     public function testShouldSerializeNullBinary()
@@ -148,29 +148,29 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         $user = new UnitTest(array('blob_value' => null));
         $xml = $user->toXml();
 
-        $this->assertContains('<blob-value encoding="base64" type="binary" nil="true"></blob-value>', $xml);
+        $this->assertStringContainsString('<blob-value encoding="base64" type="binary" nil="true"></blob-value>', $xml);
     }
 
     public function testShouldSerializeNullDate()
     {
         $user = new User(array('created_on' => null));
         $xml = $user->toXml();
-        $this->assertContains('<created-on type="date" nil="true"></created-on>', $xml);
+        $this->assertStringContainsString('<created-on type="date" nil="true"></created-on>', $xml);
 
         $user = new User(array('created_on' => '0000-00-00'));
         $xml = $user->toXml();
-        $this->assertContains('<created-on type="date" nil="true"></created-on>', $xml);
+        $this->assertStringContainsString('<created-on type="date" nil="true"></created-on>', $xml);
     }
 
     public function testShouldSerializeNullDatetime()
     {
         $user = new User(array('created_at' => null));
         $xml = $user->toXml();
-        $this->assertContains('<created-at type="datetime" nil="true"></created-at>', $xml);
+        $this->assertStringContainsString('<created-at type="datetime" nil="true"></created-at>', $xml);
 
         $user = new User(array('created_at' => '0000-00-00 00:00:00'));
         $xml = $user->toXml();
-        $this->assertContains('<created-at type="datetime" nil="true"></created-at>', $xml);
+        $this->assertStringContainsString('<created-at type="datetime" nil="true"></created-at>', $xml);
     }
 
     public function testShouldSerializeNullBoolean()
@@ -178,7 +178,7 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         $user = new User(array('approved' => null));
         $xml = $user->toXml();
 
-        $this->assertContains('<approved type="boolean" nil="true"></approved>', $xml);
+        $this->assertStringContainsString('<approved type="boolean" nil="true"></approved>', $xml);
     }
 
 
@@ -201,9 +201,9 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
     {
         $xml = $this->companies('maintainable')->toXml(array('include' => 'Users', 'indent' => 0));
         
-        $this->assertContains('<users type="array">', $xml);
-        $this->assertContains('<user>',               $xml);
-        $this->assertContains('<user type="Client">', $xml);
+        $this->assertStringContainsString('<users type="array">', $xml);
+        $this->assertStringContainsString('<user>',               $xml);
+        $this->assertStringContainsString('<user type="Client">', $xml);
     }
 
     public function testMethodsAreCalledOnObject()
@@ -213,7 +213,7 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         
         $xml = $xmlRpc->toXml($options);
         
-        $this->assertContains('<foo>test serializer foo</foo>', $xml);
+        $this->assertStringContainsString('<foo>test serializer foo</foo>', $xml);
     }
 
     public function testPropertiesAreCalledOnObject()
@@ -224,7 +224,7 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
 
         $xml = $xmlRpc->toXml($options);
 
-        $this->assertContains('<validity><is>excellent</is></validity>', $xml);
+        $this->assertStringContainsString('<validity><is>excellent</is></validity>', $xml);
     }
 
     public function testShouldNotCallMethodsOnAssociationsThatDontRespond()
@@ -234,8 +234,8 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
                                                              'methods' => 'foo'));        
 
         $this->assertTrue(!method_exists($this->companies('maintainable')->users[0], 'foo'));
-        $this->assertContains('  <foo>test serializer foo</foo>', $xml);
-        $this->assertNotContains('    <foo>',                     $xml);
+        $this->assertStringContainsString('  <foo>test serializer foo</foo>', $xml);
+        $this->assertStringNotContainsString('    <foo>',                     $xml);
     }
 
     public function testShouldNotCallPropertiesOnAssociationsThatDontRespond()
@@ -244,8 +244,8 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
                                                              'indent'  => 2,
                                                              'properties' => 'is_cool'));
 
-        $this->assertContains('  <is-cool type="boolean">true</is-cool>', $xml);
-        $this->assertNotContains('    <is-cool>',                         $xml);
+        $this->assertStringContainsString('  <is-cool type="boolean">true</is-cool>', $xml);
+        $this->assertStringNotContainsString('    <is-cool>',                         $xml);
     }
 
     public function testShouldIncludeEmptyHasManyAsEmptyArray()
@@ -257,7 +257,7 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         $array = Mad_Support_ArrayObject::fromXml($xml);
         $this->assertEquals(array(), $array['company']['users']);
         
-        $this->assertContains('<users type="array"></users>', $xml);
+        $this->assertStringContainsString('<users type="array"></users>', $xml);
     }
 
     public function testShouldHasManyArrayElementsShouldIncludeTypeWhenDifferentFromGuessedValue()
@@ -266,9 +266,9 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
                                                              'indent'  => 2));
 
         $this->assertNotNull(Mad_Support_ArrayObject::fromXml($xml));
-        $this->assertContains('<employees type="array">', $xml);
-        $this->assertContains('<employee type="User">',   $xml);
-        $this->assertContains('<employee type="Client">', $xml);
+        $this->assertStringContainsString('<employees type="array">', $xml);
+        $this->assertStringContainsString('<employee type="User">',   $xml);
+        $this->assertStringContainsString('<employee type="Client">', $xml);
     }
 
 
@@ -284,8 +284,8 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
         
         $xml = $serializer->serialize($record, $options);
 
-        $this->assertContains('<name>Mike Naberezny</name>', $xml);
-        $this->assertNotContains('<updated-at',              $xml);
+        $this->assertStringContainsString('<name>Mike Naberezny</name>', $xml);
+        $this->assertStringNotContainsString('<updated-at',              $xml);
     }
 
     public function testSerializeIncludeSingleBelongsto()
@@ -296,10 +296,10 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
 
         $xml = $serializer->serialize($record, $options);
         
-        $this->assertContains('<article>',                 $xml);
-        $this->assertContains('<title>Easier XML-RPC for', $xml);
-        $this->assertContains('<user>',                    $xml);
-        $this->assertContains('<name>Mike Naberezny',      $xml);
+        $this->assertStringContainsString('<article>',                 $xml);
+        $this->assertStringContainsString('<title>Easier XML-RPC for', $xml);
+        $this->assertStringContainsString('<user>',                    $xml);
+        $this->assertStringContainsString('<name>Mike Naberezny',      $xml);
     }
 
     public function testSerializeIncludeSingleHasMany()
@@ -310,12 +310,12 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
 
         $xml = $serializer->serialize($record, $options);
 
-        $this->assertContains('<article>',                 $xml);
-        $this->assertContains('<title>Easier XML-RPC for', $xml);
-        $this->assertContains('<comments type="array">',   $xml);
-        $this->assertContains('<comment>',                 $xml);
-        $this->assertContains('<body>Comment A</body>',    $xml);
-        $this->assertContains('<body>Comment B</body>',    $xml);
+        $this->assertStringContainsString('<article>',                 $xml);
+        $this->assertStringContainsString('<title>Easier XML-RPC for', $xml);
+        $this->assertStringContainsString('<comments type="array">',   $xml);
+        $this->assertStringContainsString('<comment>',                 $xml);
+        $this->assertStringContainsString('<body>Comment A</body>',    $xml);
+        $this->assertStringContainsString('<body>Comment B</body>',    $xml);
     }
 
     public function testSerializeIncludeMultiple()
@@ -326,14 +326,14 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
 
         $xml = $serializer->serialize($record, $options);
 
-        $this->assertContains('<article>',                 $xml);
-        $this->assertContains('<title>Easier XML-RPC for', $xml);
-        $this->assertContains('<user>',                    $xml);
-        $this->assertContains('<name>Mike Naberezny',      $xml);
-        $this->assertContains('<comments type="array">',   $xml);
-        $this->assertContains('<comment>',                 $xml);
-        $this->assertContains('<body>Comment A</body>',    $xml);
-        $this->assertContains('<body>Comment B</body>',    $xml);
+        $this->assertStringContainsString('<article>',                 $xml);
+        $this->assertStringContainsString('<title>Easier XML-RPC for', $xml);
+        $this->assertStringContainsString('<user>',                    $xml);
+        $this->assertStringContainsString('<name>Mike Naberezny',      $xml);
+        $this->assertStringContainsString('<comments type="array">',   $xml);
+        $this->assertStringContainsString('<comment>',                 $xml);
+        $this->assertStringContainsString('<body>Comment A</body>',    $xml);
+        $this->assertStringContainsString('<body>Comment B</body>',    $xml);
     }
 
     public function testSerializeIncludeWithOptions()
@@ -345,14 +345,14 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
 
         $xml = $serializer->serialize($record, $options);
 
-        $this->assertContains('<article>',             $xml);
-        $this->assertContains('<title>Easier XML-RPC', $xml);
+        $this->assertStringContainsString('<article>',             $xml);
+        $this->assertStringContainsString('<title>Easier XML-RPC', $xml);
 
-        $this->assertContains('<user>',                $xml);
-        $this->assertNotContains('<company_id>',       $xml);
+        $this->assertStringContainsString('<user>',                $xml);
+        $this->assertStringNotContainsString('<company_id>',       $xml);
 
-        $this->assertContains('<comment>',             $xml);
-        $this->assertNotContains('<article_id>',       $xml);
+        $this->assertStringContainsString('<comment>',             $xml);
+        $this->assertStringNotContainsString('<article_id>',       $xml);
     }
 
     public function testSerializeWithMethods()
@@ -363,9 +363,9 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
 
         $xml = $serializer->serialize($record, $options);
         
-        $this->assertContains('<foo>test serializer foo</foo>',                 $xml);
-        $this->assertContains('<int-method type="integer">123</int-method>',    $xml);
-        $this->assertContains('<bool-method type="boolean">true</bool-method>', $xml);        
+        $this->assertStringContainsString('<foo>test serializer foo</foo>',                 $xml);
+        $this->assertStringContainsString('<int-method type="integer">123</int-method>',    $xml);
+        $this->assertStringContainsString('<bool-method type="boolean">true</bool-method>', $xml);        
     }
 
     public function testSerializeWithProperties()
@@ -379,8 +379,8 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
 
         $xml = $serializer->serialize($record, $options);
 
-        $this->assertContains('<is-good type="boolean">true</is-good>', $xml);
-        $this->assertContains('<validity><is>great</is></validity>',    $xml);
+        $this->assertStringContainsString('<is-good type="boolean">true</is-good>', $xml);
+        $this->assertStringContainsString('<validity><is>great</is></validity>',    $xml);
     }
 
     /*##########################################################################
@@ -395,9 +395,9 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
     
         $xml = $record->toXml($options);
 
-        $this->assertContains('<user>',                  $xml);
-        $this->assertContains('<comments type="array">', $xml);
-        $this->assertContains('<comment>',               $xml);
+        $this->assertStringContainsString('<user>',                  $xml);
+        $this->assertStringContainsString('<comments type="array">', $xml);
+        $this->assertStringContainsString('<comment>',               $xml);
     }
 
     public function testFromXml()
@@ -422,7 +422,7 @@ class Mad_Model_Serializer_XmlTest extends Mad_Test_Unit
 
         $xml = $record->toXml();
 
-        $this->assertContains('<approved type="boolean">false</approved>', $xml);
+        $this->assertStringContainsString('<approved type="boolean">false</approved>', $xml);
     }
     /*##########################################################################
     ##########################################################################*/

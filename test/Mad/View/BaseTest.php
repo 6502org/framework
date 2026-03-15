@@ -16,18 +16,18 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      view
  * @category   Mad
  * @package    Mad_View
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('view')]
 class Mad_View_BaseTest extends Mad_Test_Unit
 {
     protected $_view = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->_view = new Mad_View_Base();
         $this->_view->addPath('test/Mad/View/views/');
@@ -239,6 +239,7 @@ class Mad_View_BaseTest extends Mad_Test_Unit
 
         // sucessfull when trying to add it again
         $this->_view->addHelper(new Mad_View_Helper_Text($this->_view));
+        $this->assertTrue(true);
     }
 
 }

@@ -1,0 +1,52 @@
+name: Run all tests
+
+on: [push, pull_request]
+
+jobs:
+  test_mysql:
+    runs-on: ubuntu-24.04
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: madmodel_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-mysql
+          wget -q https://phar.phpunit.de/phpunit-11.phar -O phpunit
+          chmod +x phpunit
+          sudo mv phpunit /usr/local/bin/phpunit
+      - name: Configure database
+        run: |
+          sed -i "s/host:.*/host: 127.0.0.1/" config/database.yml                                             
+          sed -i "s/username:.*/username: root/" config/database.yml                                          
+      - name: Load test schema
+        run: |
+          mysql -h 127.0.0.1 -u root madmodel_test < db/tests/madmodel_test_mysql.sql
+      - name: Run tests
+        run: php ./script/task test
+
+  test_sqlite:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-sqlite3
+          wget -q https://phar.phpunit.de/phpunit-11.phar -O phpunit
+          chmod +x phpunit
+          sudo mv phpunit /usr/local/bin/phpunit
+      - name: Run tests
+        run: php ./script/task test MAD_ENV=test_sqlite

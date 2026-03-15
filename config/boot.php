@@ -5,7 +5,7 @@ define('MAD_ROOT', dirname(dirname(__FILE__)));
 if (! defined('MAD_ENV')) {
     define('MAD_ENV', isset($_SERVER['MAD_ENV']) ? $_SERVER['MAD_ENV'] : 'development');
 }
-ini_set('date.timezone', 'US/Pacific');
+ini_set('date.timezone', 'America/Los_Angeles');
 
 // include paths
 set_include_path(implode(PATH_SEPARATOR, array(
@@ -29,13 +29,12 @@ if (MAD_ENV == 'production') {
     error_reporting(0);
 } else {
     ini_set('display_errors', 1);
-    error_reporting(E_ALL | E_STRICT);
+    error_reporting(E_ALL);
 }
 
 // initialize the default loger. writers and filters are specified in the environment files.
 $GLOBALS['MAD_DEFAULT_LOGGER'] = new Horde_Log_Logger();
-$writer = new Horde_Log_Handler_Stream(MAD_ROOT.DIRECTORY_SEPARATOR.'log'.
-                                              DIRECTORY_SEPARATOR.MAD_ENV.'.log');
+$writer = new Horde_Log_Handler_Stream(MAD_ROOT.'/log/'.MAD_ENV.'.log', 'a+');
 $GLOBALS['MAD_DEFAULT_LOGGER']->addHandler($writer);
 
 // priority filters

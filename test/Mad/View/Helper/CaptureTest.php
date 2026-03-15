@@ -16,16 +16,16 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      view
  * @category   Mad
  * @package    Mad_View
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('view')]
 class Mad_View_Helper_CaptureTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->view   = new Mad_View_Base();
         $this->helper = new Mad_View_Helper_Capture($this->view);
@@ -49,7 +49,7 @@ class Mad_View_Helper_CaptureTest extends Mad_Test_Unit
             $this->fail();
         } catch (Exception $e) {
             $this->assertInstanceOf('Mad_View_Exception', $e);
-            $this->assertRegExp('/capture already ended/i', $e->getMessage());
+            $this->assertMatchesRegularExpression('/capture already ended/i', $e->getMessage());
         }
     }
     

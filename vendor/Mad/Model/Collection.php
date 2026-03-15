@@ -126,6 +126,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      * </code>
      * @return  int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->_collection);
@@ -148,6 +149,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      * </code>
      * @return  Mad_Model_Base
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->offsetGet($this->_position);
@@ -166,6 +168,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      *
      * @return  int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->_position;
@@ -184,6 +187,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      *
      * @return  Mad_Model_Base
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         $this->_position++;
@@ -202,6 +206,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      * </code>
      *
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->_position = 0;
@@ -212,6 +217,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      * Check if the current element exists
      * @return  boolean
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->offsetExists($this->_position);
@@ -228,6 +234,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      * @param   int     $offset
      * @return  boolean
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->_collection[$offset]);
@@ -247,6 +254,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      * @param   int     $offset
      * @return  Mad_Model_Base
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if ($this->offsetExists($offset)) {
@@ -260,6 +268,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      * @param   int     $offset
      * @param   mixed   $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value) 
     {
         // Can only add Models to the collection
@@ -273,6 +282,7 @@ class Mad_Model_Collection implements ArrayAccess, Iterator, Countable
      * 
      * @param   int     $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset) {}
 
     /**

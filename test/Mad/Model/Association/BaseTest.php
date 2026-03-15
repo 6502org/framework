@@ -16,13 +16,13 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      model
  * @category   Mad
  * @package    Mad_Model
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('model')]
 class Mad_Model_Association_BaseTest extends Mad_Test_Unit
 {
     /*##########################################################################
@@ -143,7 +143,7 @@ class Mad_Model_Association_BaseTest extends Mad_Test_Unit
             $assoc = Mad_Model_Association_Base::factory('belongsTo', 'Test', $options, new Article);
             $this->fail();
         } catch (InvalidArgumentException $e) {
-            $this->assertRegExp('/unknown key/i', $e->getMessage());
+            $this->assertMatchesRegularExpression('/unknown key/i', $e->getMessage());
         }
     }
 

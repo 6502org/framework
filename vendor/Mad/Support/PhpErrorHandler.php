@@ -41,11 +41,13 @@ class Mad_Support_PhpErrorHandler
 	 */
 	public static function handle($errno, $errstr, $errfile, $errline)
 	{
-	    if (ini_get('error_reporting') == 0) {
-            // silence operator ("@") was used
+	    // Check if error was suppressed with the @ operator.
+	    // In PHP 8.0+, @ no longer sets error_reporting to 0;
+	    // instead it sets a bitmask that excludes the current error level.
+	    if (!(error_reporting() & $errno)) {
 	        return;
 	    }
-	    
+
 	    throw new Mad_Support_PhpError($errstr, $errno, $errfile, $errline);
 	}
 

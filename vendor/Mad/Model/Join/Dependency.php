@@ -301,6 +301,10 @@ class Mad_Model_Join_Dependency
         } elseif ($macro == 'belongsTo' || $macro == 'hasOne') {
             $assignMethod = Mad_Support_Inflector::camelize($singular, 'lower');
             $record->$assignMethod = $association;
+            // The assignment above marks the association as changed, but
+            // this is eager loading, not a user assignment.
+            $assocName = $join->reflection()->getAssocName();
+            $record->reflectOnAssociation($assocName)->setChanged(false);
         }
         return $association;
     }

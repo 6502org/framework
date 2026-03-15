@@ -4,3 +4,4 @@ test/tmp/**/*
 .DS_Store
 nbproject/
 doc/build/*
+db/tests/madmodel_test.sqlite3

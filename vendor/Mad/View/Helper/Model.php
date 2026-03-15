@@ -54,7 +54,7 @@ class Mad_View_Helper_Model extends Mad_View_Helper_Base
         foreach(array('id', 'class') as $key) {
             if (array_key_exists($key, $options)) {
                 $value = $options[$key];
-                if (strlen($value)) {
+                if (strlen((string)$value)) {
                     $htmlOptions[$key] = $value;
                 }
             } else {

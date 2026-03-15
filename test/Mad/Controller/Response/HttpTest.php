@@ -18,17 +18,17 @@ if (!defined('MAD_ROOT')) {
 /**
  * Represents an HTTP response to the user.
  *
- * @group      controller
  * @category   Mad
  * @package    Mad_Controller
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('controller')]
 class Mad_Controller_Response_HttpTest extends Mad_Test_Unit
 {
     // simulate http response data
-    public function setUp()
+    public function setUp(): void
     {
         $this->_response = new Mad_Controller_Response_Mock();
     }

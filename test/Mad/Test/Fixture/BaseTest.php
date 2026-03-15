@@ -24,8 +24,9 @@ if (!defined('MAD_ROOT')) {
  */
 class Mad_Test_Fixture_BaseTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
+        $this->_connect();
         $this->_conn->execute("DELETE FROM unit_tests");
         Mad_Test_Fixture_Base::resetParsed();
     }

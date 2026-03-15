@@ -16,16 +16,16 @@ if (!defined('MAD_ROOT')) {
 }
 
 /**
- * @group      view
  * @category   Mad
  * @package    Mad_View
  * @subpackage UnitTests
  * @copyright  (c) 2007-2009 Maintainable Software, LLC
  * @license    http://opensource.org/licenses/bsd-license.php BSD
  */
+#[\PHPUnit\Framework\Attributes\Group('view')]
 class Mad_View_Helper_TagTest extends Mad_Test_Unit
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->helper = new Mad_View_Helper_Tag(new Mad_View_Base());
     }
@@ -41,7 +41,7 @@ class Mad_View_Helper_TagTest extends Mad_Test_Unit
     
     public function testTagOptions()
     {
-        $this->assertRegExp('/\A<p class="(show|elsewhere)" \/>\z/',
+        $this->assertMatchesRegularExpression('/\A<p class="(show|elsewhere)" \/>\z/',
                             $this->helper->tag('p', array('class' => 'show',
                                                           'class' => 'elsewhere')));
     }
