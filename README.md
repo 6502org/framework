@@ -1,15 +1,19 @@
-Maintainable PHP Framework
-==========================
+Framework
+=========
 
-This is a framework based around the Model-View-Controller pattern
+This is the PHP framework used by the [6502.org](http://6502.org) website.  It is forked from 
+[`maintainable/framework`](https://github.com/maintainable/framework), which is no longer developed.
+
+The purpose of this fork is only to update the framework as needed by 6502.org.  This fork is not a continuation of general development of the framework.  Issue reports and pull requests against this repository generally won't be reviewed, expect when related to 6502.org.
+
+The framework based around the Model-View-Controller pattern
 and modeled after Ruby on Rails 1.2.  It is compatible with PHP
 version 5.1.4 and later.
-
 
 Repository Layout
 -----------------
 
-The repository shares the same layout as an application built with the
+This repository shares the same layout as an application built with the
 framework.  This is mostly because of historical reasons.
 
 
@@ -75,24 +79,3 @@ are run the same way as an application's tests would be.  Change to the
 Before you can run the tests, you need to create a database and configure
 the connection in `database.yml`.  You also need to build the tests database
 using the file `db/tests/madmodel_test.sql`.
-
-
-State of Development
---------------------
-
-This framework is no longer developed and is not recommended for new projects.
-
-Most of the development was done around the time of Rails 1.2.  As such,
-Rails developers will notice many of the important additions since
-Rails 2.0 are not implemented.
-
-Acknowledgements
-----------------
-
-We would like to thank [Chuck Hagenbuch](http://github.com/chuck) of the
-[Horde Project](http://horde.org) and [Sebastian Bergmann](http://github.com/sebastianbergmann)
-of [PHPUnit](http://phpunit.de) for helping us with maintenance by
-integrating some of our code into their projects.
-
-We would also like to thank all the folks who have provided patches
-or support in other ways.
