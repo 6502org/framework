@@ -82,6 +82,12 @@ class Mad_View_Helper_UrlTest extends Mad_Test_Unit
                             $this->view->linkTo("Hello", array('action' => 'myaction'), null));
     }
 
+    public function testLinkTagWithHtmlOptionsDoesNotAddEmptyOnclick()
+    {
+        $this->assertEquals('<a href="http://www.example.com" class="nav">Hello</a>',
+                            $this->view->linkTo('Hello', 'http://www.example.com', ['class' => 'nav']));
+    }
+
     public function testLinkTagWithCustomOnclick()
     {
         $this->assertEquals("<a href=\"http://www.example.com\" onclick=\"alert('yay!')\">Hello</a>",
