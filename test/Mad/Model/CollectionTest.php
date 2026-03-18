@@ -274,6 +274,52 @@ class Mad_Model_CollectionTest extends Mad_Test_Unit
     }
 
     /*##########################################################################
+    # Nested Iteration
+    ##########################################################################*/
+
+    // nested foreach over the same collection must not corrupt the outer loop
+    public function testNestedForeachResults()
+    {
+        $outerIds = [];
+        foreach ($this->_results as $outer) {
+            $outerIds[] = $outer->id;
+            // inner loop iterates the same collection
+            foreach ($this->_results as $inner) {
+                // just iterate
+            }
+        }
+        $this->assertEquals(6, count($outerIds));
+        $this->assertEquals('1', $outerIds[0]);
+        $this->assertEquals('6', $outerIds[5]);
+    }
+
+    public function testNestedForeachModels()
+    {
+        $outerIds = [];
+        foreach ($this->_models as $outer) {
+            $outerIds[] = $outer->id;
+            foreach ($this->_models as $inner) {
+                // just iterate
+            }
+        }
+        $this->assertEquals(6, count($outerIds));
+        $this->assertEquals('1', $outerIds[0]);
+        $this->assertEquals('6', $outerIds[5]);
+    }
+
+    // iterating while calling a method that also iterates the collection
+    public function testIterationWithCountDuringLoop()
+    {
+        $items = [];
+        foreach ($this->_results as $item) {
+            $items[] = $item;
+            // count() shouldn't affect the foreach
+            $this->assertEquals(6, count($this->_results));
+        }
+        $this->assertEquals(6, count($items));
+    }
+
+    /*##########################################################################
     # ArrayAccess Interface
     ##########################################################################*/
 
