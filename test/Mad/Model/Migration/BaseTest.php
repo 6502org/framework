@@ -157,6 +157,75 @@ class Mad_Model_Migration_BaseTest extends Mad_Test_Unit
         $this->assertEquals(80, $columns['foo']->getLimit());
     }
 
+    public function testCreateTableWithClosure()
+    {
+        $migration = new Mad_Model_Migration_Base();
+        $migration->createTable('testings', function($t) {
+            $t->column('foo', 'string');
+        });
+
+        $columns = [];
+        foreach ($this->_conn->columns('testings') as $col) {
+            $columns[] = $col->getName();
+        }
+        sort($columns);
+        $this->assertEquals(['foo', 'id'], $columns);
+    }
+
+    public function testCreateTableWithClosureAndOptions()
+    {
+        $migration = new Mad_Model_Migration_Base();
+        $migration->createTable('testings', ['primaryKey' => false], function($t) {
+            $t->column('foo', 'string');
+        });
+
+        $columns = [];
+        foreach ($this->_conn->columns('testings') as $col) {
+            $columns[] = $col->getName();
+        }
+        $this->assertEquals(['foo'], $columns);
+    }
+
+    public function testCreateTableWithoutClosureReturnsDefinition()
+    {
+        $migration = new Mad_Model_Migration_Base();
+        $t = $migration->createTable('testings');
+        $this->assertInstanceOf('Horde_Db_Adapter_Abstract_TableDefinition', $t);
+            $t->column('foo', 'string');
+        $t->end();
+
+        $columns = [];
+        foreach ($this->_conn->columns('testings') as $col) {
+            $columns[] = $col->getName();
+        }
+        sort($columns);
+        $this->assertEquals(['foo', 'id'], $columns);
+    }
+
+    public function testCreateTableWithoutClosureAndWithOptions()
+    {
+        $migration = new Mad_Model_Migration_Base();
+        $t = $migration->createTable('testings', ['primaryKey' => false]);
+        $this->assertInstanceOf('Horde_Db_Adapter_Abstract_TableDefinition', $t);
+            $t->column('foo', 'string');
+        $t->end();
+
+        $columns = [];
+        foreach ($this->_conn->columns('testings') as $col) {
+            $columns[] = $col->getName();
+        }
+        $this->assertEquals(['foo'], $columns);
+    }
+
+    public function testCreateTableWithClosureReturnsNull()
+    {
+        $migration = new Mad_Model_Migration_Base();
+        $result = $migration->createTable('testings', function($t) {
+            $t->column('foo', 'string');
+        });
+        $this->assertNull($result);
+    }
+
     public function testAddColumnNotNullWithoutDefault()
     {
         $table = $this->_conn->createTable('testings');
